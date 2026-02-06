@@ -1,5 +1,8 @@
 name: Update NIFTY Close from Google Sheet
 
+permissions:
+  contents: write
+
 on:
   schedule:
     # 3:40 PM IST = 10:10 UTC
