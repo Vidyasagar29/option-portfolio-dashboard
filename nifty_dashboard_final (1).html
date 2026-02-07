@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIFTY Options Portfolio Dashboard</title>
+</head>
+<body>
+    <div id="niftyDashboard" style="
+        width: 100%;
+        height: 100vh;
+        min-height: 600px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #0a0e27;
+        color: #e0e6ed;
+        box-sizing: border-box;
+    ">
+        <style scoped>
+            #niftyDashboard * {
+                box-sizing: border-box;
+            }
+
+            #niftyDashboard .dashboard {
+                display: flex;
+                height: 100%;
+                padding: 12px;
+                gap: 12px;
+                width: 100%;
+            }
+
+            #niftyDashboard .left-panel {
+                width: 60%;
+                min-width: 60%;
+                max-width: 60%;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            #niftyDashboard .right-panel {
+                width: 40%;
+                min-width: 40%;
+                max-width: 40%;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #niftyDashboard .panel-section {
+                background: #141b2d;
+                border-radius: 8px;
+                border: 1px solid #1f2937;
+                overflow: hidden;
+            }
+
+            #niftyDashboard .left-panel .panel-section:first-child {
+                flex: 0 0 40%;
+            }
+
+            #niftyDashboard .left-panel .panel-section:last-child {
+                flex: 0 0 60%;
+            }
+
+            #niftyDashboard .right-panel .panel-section {
+                flex: 1;
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 768px) {
+                #niftyDashboard {
+                    height: auto !important;
+                    min-height: 100vh !important;
+                    overflow-y: auto !important;
+                }
+
+                #niftyDashboard .dashboard {
+                    flex-direction: column;
+                    height: auto;
+                    min-height: 100vh;
+                    padding: 8px;
+                    gap: 8px;
+                }
+
+                #niftyDashboard .left-panel,
+                #niftyDashboard .right-panel {
+                    width: 100%;
+                    min-width: 100%;
+                    max-width: 100%;
+                }
+
+                #niftyDashboard .left-panel .panel-section {
+                    min-height: 300px;
+                }
+
+                #niftyDashboard .right-panel .panel-section {
+                    min-height: 400px;
+                }
+
+                #niftyDashboard .panel-content {
+                    max-height: 350px;
+                }
+
+                #niftyDashboard #chartContainer {
+                    min-height: 250px;
+                }
+
+                #niftyDashboard #payoffTable th:nth-child(1) { min-width: 80px; }
+                #niftyDashboard #payoffTable th:nth-child(2) { min-width: 70px; }
+                #niftyDashboard #payoffTable th:nth-child(3) { min-width: 70px; }
+                #niftyDashboard #payoffTable th:nth-child(4) { min-width: 70px; }
+                #niftyDashboard #payoffTable th:nth-child(5) { min-width: 90px; }
+            }
+
+            #niftyDashboard .panel-header {
+                background: #1a2332;
+                padding: 10px 16px;
+                border-bottom: 1px solid #1f2937;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                color: #60a5fa;
+            }
+
+            #niftyDashboard .panel-content {
+                height: calc(100% - 41px);
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            #niftyDashboard .status-indicator {
+                padding: 8px 16px;
+                background: #1a2332;
+                border-bottom: 1px solid #1f2937;
+                font-size: 11px;
+                text-align: center;
+            }
+
+            #niftyDashboard .status-indicator.loading {
+                color: #60a5fa;
+            }
+
+            #niftyDashboard .status-indicator.success {
+                color: #10b981;
+            }
+
+            #niftyDashboard .status-indicator.error {
+                color: #ef4444;
+            }
+
+            /* Tables */
+            #niftyDashboard table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+
+            #niftyDashboard #payoffTable {
+                min-width: 100%;
+            }
+
+            #niftyDashboard #payoffTable th:nth-child(1) { min-width: 100px; }
+            #niftyDashboard #payoffTable th:nth-child(2) { min-width: 90px; }
+            #niftyDashboard #payoffTable th:nth-child(3) { min-width: 90px; }
+            #niftyDashboard #payoffTable th:nth-child(4) { min-width: 90px; }
+            #niftyDashboard #payoffTable th:nth-child(5) { min-width: 110px; }
+
+            #niftyDashboard thead {
+                position: sticky;
+                top: 0;
+                background: #1a2332;
+                z-index: 10;
+            }
+
+            #niftyDashboard th {
+                padding: 10px 8px;
+                text-align: right;
+                font-weight: 600;
+                color: #9ca3af;
+                border-bottom: 1px solid #1f2937;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                white-space: nowrap;
+            }
+
+            #niftyDashboard th:first-child {
+                text-align: left;
+            }
+
+            #niftyDashboard td {
+                padding: 8px 8px;
+                text-align: right;
+                border-bottom: 1px solid #1f2937;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            #niftyDashboard td:first-child {
+                text-align: left;
+                font-weight: 500;
+            }
+
+            #niftyDashboard tbody tr:hover {
+                background: #1a2332;
+            }
+
+            #niftyDashboard .total-row {
+                background: #1a2332 !important;
+                font-weight: 700;
+                border-top: 2px solid #374151;
+            }
+
+            #niftyDashboard .positive {
+                color: #10b981;
+            }
+
+            #niftyDashboard .negative {
+                color: #ef4444;
+            }
+
+            /* Mobile table adjustments */
+            @media (max-width: 768px) {
+                #niftyDashboard table {
+                    font-size: 10px;
+                }
+
+                #niftyDashboard th, #niftyDashboard td {
+                    padding: 6px 6px;
+                    font-size: 10px;
+                }
+
+                #niftyDashboard th {
+                    font-size: 9px;
+                    padding: 8px 6px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                #niftyDashboard table {
+                    font-size: 9px;
+                }
+
+                #niftyDashboard th, #niftyDashboard td {
+                    padding: 5px 4px;
+                    font-size: 9px;
+                }
+
+                #niftyDashboard th {
+                    font-size: 8px;
+                    padding: 6px 4px;
+                }
+            }
+
+            /* Chart Container */
+            #niftyDashboard #chartContainer {
+                height: 100%;
+                padding: 16px;
+                position: relative;
+            }
+
+            #niftyDashboard canvas {
+                max-height: 100%;
+                cursor: crosshair;
+            }
+
+            /* Loading State */
+            #niftyDashboard .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                color: #6b7280;
+                font-size: 13px;
+            }
+
+            #niftyDashboard .spinner {
+                border: 3px solid #1f2937;
+                border-top: 3px solid #60a5fa;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin-bottom: 12px;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            /* Scrollbar */
+            #niftyDashboard ::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-track {
+                background: #0a0e27;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-thumb {
+                background: #374151;
+                border-radius: 3px;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-thumb:hover {
+                background: #4b5563;
+            }
+        </style>
+
+        <div class="dashboard">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <!-- Portfolio Snapshot -->
+            <div class="panel-section">
+                <div class="panel-header">PORTFOLIO SNAPSHOT</div>
+                <div id="statusIndicator" class="status-indicator loading">Loading data from GitHub...</div>
+                <div class="panel-content">
+                    <table id="snapshotTable">
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Quantity</th>
+                                <th>Buy/Sell Price</th>
+                                <th>CMP</th>
+                                <th>P&L (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="loading">
+                                    <div class="spinner"></div>
+                                    <div>Loading portfolio data...</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="panel-section">
+                <div class="panel-header">P&L vs NIFTY SPOT</div>
+                <div class="panel-content" id="chartContainer">
+                    <canvas id="plChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="panel-section">
+                <div class="panel-header">DAILY PAYOFF TABLE</div>
+                <div class="panel-content">
+                    <table id="payoffTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Spot Price</th>
+                                <th>Put Price</th>
+                                <th>Call Price</th>
+                                <th>Total P&L (₹)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="5" class="loading">
+                                    <div class="spinner"></div>
+                                    <div>Loading daily payoff data...</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script>
+        // CSV Data Source
+        const CSV_URL = "https://raw.githubusercontent.com/Vidyasagar29/nifty-close-data/main/nifty_close.csv";
+
+        // Black-Scholes Implementation
+        function cumulativeNormalDistribution(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return x > 0 ? 1 - prob : prob;
+        }
+
+        function blackScholes(spot, strike, timeToExpiry, riskFreeRate, volatility, optionType) {
+            if (timeToExpiry <= 0) {
+                if (optionType === 'call') {
+                    return Math.max(spot - strike, 0);
+                } else {
+                    return Math.max(strike - spot, 0);
+                }
+            }
+
+            const d1 = (Math.log(spot / strike) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / 
+                       (volatility * Math.sqrt(timeToExpiry));
+            const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
+
+            if (optionType === 'call') {
+                return spot * cumulativeNormalDistribution(d1) - 
+                       strike * Math.exp(-riskFreeRate * timeToExpiry) * cumulativeNormalDistribution(d2);
+            } else {
+                return strike * Math.exp(-riskFreeRate * timeToExpiry) * cumulativeNormalDistribution(-d2) - 
+                       spot * cumulativeNormalDistribution(-d1);
+            }
+        }
+
+        // Portfolio Parameters
+        const PORTFOLIO = {
+            quantity: 2475,
+            putStrike: 25000,
+            callStrike: 29000,
+            putIV: 0.16,
+            callIV: 0.09,
+            riskFreeRate: 0.10,
+            expiryDate: new Date('2026-12-29')
+        };
+
+        let portfolioData = null;
+        let chartInstance = null;
+
+        function formatINR(value) {
+            return '₹' + value.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatNumber(value) {
+            return value.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const [dateStr, closeStr] = line.split(',');
+                const date = new Date(dateStr.trim());
+                const close = parseFloat(closeStr.trim());
+                
+                if (!isNaN(date.getTime()) && !isNaN(close)) {
+                    data.push({ date, close });
+                }
+            }
+            
+            data.sort((a, b) => a.date - b.date);
+            return data;
+        }
+
+        function calculatePortfolio(priceData) {
+            if (priceData.length === 0) return null;
+
+            const startDate = priceData[0].date;
+            const startSpot = priceData[0].close;
+            
+            // Calculate time to expiry on start date
+            const startTimeToExpiry = (PORTFOLIO.expiryDate - startDate) / (1000 * 60 * 60 * 24 * 365);
+            
+            // Initial option prices
+            const startPutPrice = blackScholes(
+                startSpot, 
+                PORTFOLIO.putStrike, 
+                startTimeToExpiry, 
+                PORTFOLIO.riskFreeRate, 
+                PORTFOLIO.putIV, 
+                'put'
+            );
+            
+            const startCallPrice = blackScholes(
+                startSpot, 
+                PORTFOLIO.callStrike, 
+                startTimeToExpiry, 
+                PORTFOLIO.riskFreeRate, 
+                PORTFOLIO.callIV, 
+                'call'
+            );
+
+            // Calculate daily portfolio values
+            const dailyData = priceData.map(entry => {
+                const timeToExpiry = Math.max(0, (PORTFOLIO.expiryDate - entry.date) / (1000 * 60 * 60 * 24 * 365));
+                
+                const putPrice = blackScholes(
+                    entry.close, 
+                    PORTFOLIO.putStrike, 
+                    timeToExpiry, 
+                    PORTFOLIO.riskFreeRate, 
+                    PORTFOLIO.putIV, 
+                    'put'
+                );
+                
+                const callPrice = blackScholes(
+                    entry.close, 
+                    PORTFOLIO.callStrike, 
+                    timeToExpiry, 
+                    PORTFOLIO.riskFreeRate, 
+                    PORTFOLIO.callIV, 
+                    'call'
+                );
+
+                // P&L Calculation
+                const spotPL = (entry.close - startSpot) * PORTFOLIO.quantity;
+                const putPL = (putPrice - startPutPrice) * PORTFOLIO.quantity;
+                const callPL = (startCallPrice - callPrice) * PORTFOLIO.quantity;
+                const totalPL = spotPL + putPL + callPL;
+
+                return {
+                    date: entry.date,
+                    spot: entry.close,
+                    putPrice: putPrice,
+                    callPrice: callPrice,
+                    totalPL: totalPL
+                };
+            });
+
+            const latestData = dailyData[dailyData.length - 1];
+
+            return {
+                startSpot,
+                startPutPrice,
+                startCallPrice,
+                latest: latestData,
+                dailyData: dailyData
+            };
+        }
+
+        function updateSnapshotTable(portfolio) {
+            const tbody = document.querySelector('#snapshotTable tbody');
+            
+            const spotPL = (portfolio.latest.spot - portfolio.startSpot) * PORTFOLIO.quantity;
+            const putPL = (portfolio.latest.putPrice - portfolio.startPutPrice) * PORTFOLIO.quantity;
+            const callPL = (portfolio.startCallPrice - portfolio.latest.callPrice) * PORTFOLIO.quantity;
+            const totalPL = portfolio.latest.totalPL;
+
+            tbody.innerHTML = `
+                <tr>
+                    <td>NIFTY (Spot)</td>
+                    <td>${PORTFOLIO.quantity}</td>
+                    <td>${formatNumber(portfolio.startSpot)}</td>
+                    <td>${formatNumber(portfolio.latest.spot)}</td>
+                    <td class="${spotPL >= 0 ? 'positive' : 'negative'}">${formatINR(spotPL)}</td>
+                </tr>
+                <tr>
+                    <td>PUT 25000</td>
+                    <td>${PORTFOLIO.quantity}</td>
+                    <td>${formatNumber(portfolio.startPutPrice)}</td>
+                    <td>${formatNumber(portfolio.latest.putPrice)}</td>
+                    <td class="${putPL >= 0 ? 'positive' : 'negative'}">${formatINR(putPL)}</td>
+                </tr>
+                <tr>
+                    <td>CALL 29000</td>
+                    <td>${PORTFOLIO.quantity}</td>
+                    <td>${formatNumber(portfolio.startCallPrice)}</td>
+                    <td>${formatNumber(portfolio.latest.callPrice)}</td>
+                    <td class="${callPL >= 0 ? 'positive' : 'negative'}">${formatINR(callPL)}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="4">TOTAL PORTFOLIO P&L</td>
+                    <td class="${totalPL >= 0 ? 'positive' : 'negative'}">${formatINR(totalPL)}</td>
+                </tr>
+            `;
+        }
+
+        function updatePayoffTable(dailyData) {
+            const tbody = document.querySelector('#payoffTable tbody');
+            
+            tbody.innerHTML = dailyData.map(row => {
+                const dateStr = row.date.toLocaleDateString('en-IN', { 
+                    day: '2-digit', 
+                    month: 'short', 
+                    year: '2-digit' 
+                });
+                
+                return `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${formatNumber(row.spot)}</td>
+                        <td>${formatNumber(row.putPrice)}</td>
+                        <td>${formatNumber(row.callPrice)}</td>
+                        <td class="${row.totalPL >= 0 ? 'positive' : 'negative'}">${formatINR(row.totalPL)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateChart(dailyData) {
+            const canvas = document.getElementById('plChart');
+            const ctx = canvas.getContext('2d');
+
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            // Performance optimization: reduce data points on mobile
+            const isMobile = window.innerWidth <= 768;
+            const isSmallMobile = window.innerWidth <= 480;
+            
+            let processedData = dailyData;
+            if (isSmallMobile && dailyData.length > 60) {
+                // Show every 3rd point on small mobile
+                processedData = dailyData.filter((_, i) => i % 3 === 0 || i === dailyData.length - 1);
+            } else if (isMobile && dailyData.length > 90) {
+                // Show every 2nd point on tablet
+                processedData = dailyData.filter((_, i) => i % 2 === 0 || i === dailyData.length - 1);
+            }
+
+            const dates = processedData.map(d => d.date.toLocaleDateString('en-IN', { 
+                day: '2-digit', 
+                month: 'short' 
+            }));
+            const plValues = processedData.map(d => d.totalPL);
+            const spotValues = processedData.map(d => d.spot);
+
+            // Set canvas size
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = canvas.offsetHeight * 2;
+            ctx.scale(2, 2);
+
+            const width = canvas.offsetWidth;
+            const height = canvas.offsetHeight;
+            
+            // Responsive padding based on screen width
+            const paddingLeft = isSmallMobile ? 45 : (isMobile ? 55 : 70);
+            const paddingRight = isSmallMobile ? 45 : (isMobile ? 55 : 70);
+            const paddingTop = isSmallMobile ? 30 : (isMobile ? 35 : 40);
+            const paddingBottom = isSmallMobile ? 30 : (isMobile ? 35 : 40);
+
+            const chartWidth = width - paddingLeft - paddingRight;
+            const chartHeight = height - paddingTop - paddingBottom;
+
+            // Responsive font sizes - define early
+            const labelFontSize = isSmallMobile ? 8 : (isMobile ? 9 : 10);
+            const titleFontSize = isSmallMobile ? 9 : (isMobile ? 10 : 11);
+
+            // Calculate scales
+            const maxPL = Math.max(...plValues);
+            const minPL = Math.min(...plValues);
+            const maxSpot = Math.max(...spotValues);
+            const minSpot = Math.min(...spotValues);
+
+            const plRange = maxPL - minPL || 1;
+            const spotRange = maxSpot - minSpot || 1;
+
+            // Helper functions
+            const getX = (index) => paddingLeft + (chartWidth * index / (plValues.length - 1));
+            const getYForPL = (value) => paddingTop + chartHeight - ((value - minPL) / plRange) * chartHeight;
+            const getYForSpot = (value) => paddingTop + chartHeight - ((value - minSpot) / spotRange) * chartHeight;
+
+            // Clear canvas
+            ctx.fillStyle = '#141b2d';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw grid lines (reduce on mobile for performance)
+            const gridCount = isSmallMobile ? 3 : 5;
+            ctx.strokeStyle = '#1f2937';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i <= gridCount; i++) {
+                const y = paddingTop + (chartHeight * i / gridCount);
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(width - paddingRight, y);
+                ctx.stroke();
+            }
+
+            // Draw ZERO LINE (profit/loss breakeven)
+            if (minPL < 0 && maxPL > 0) {
+                const zeroY = getYForPL(0);
+                ctx.strokeStyle = '#fbbf24'; // Amber color for zero line
+                ctx.lineWidth = 2;
+                ctx.setLineDash([8, 4]);
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, zeroY);
+                ctx.lineTo(width - paddingRight, zeroY);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Zero line label
+                ctx.fillStyle = '#fbbf24';
+                ctx.font = `bold ${labelFontSize + 1}px Segoe UI`;
+                ctx.textAlign = 'right';
+                ctx.fillText('ZERO', paddingLeft - (isSmallMobile ? 5 : 10), zeroY - 5);
+            }
+
+            // Vertical grid lines (reduce on mobile)
+            ctx.strokeStyle = '#1f2937';
+            ctx.lineWidth = 0.5;
+            const xGridCount = isSmallMobile ? 3 : (isMobile ? 5 : Math.min(10, processedData.length - 1));
+            for (let i = 0; i <= xGridCount; i++) {
+                const x = paddingLeft + (chartWidth * i / xGridCount);
+                ctx.beginPath();
+                ctx.moveTo(x, paddingTop);
+                ctx.lineTo(x, paddingTop + chartHeight);
+                ctx.stroke();
+            }
+
+            // Calculate dynamic gradient colors based on P&L magnitude
+            const profitIntensity = maxPL > 0 ? Math.min(1, Math.abs(maxPL) / (Math.abs(maxPL) + Math.abs(minPL))) : 0;
+            const lossIntensity = minPL < 0 ? Math.min(1, Math.abs(minPL) / (Math.abs(maxPL) + Math.abs(minPL))) : 0;
+
+            // Draw P&L area with dynamic gradient
+            const plGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
+            
+            if (maxPL > 0) {
+                // Top part - green (profit zone)
+                const greenAlpha = 0.15 + (profitIntensity * 0.25); // 0.15 to 0.4
+                plGradient.addColorStop(0, `rgba(16, 185, 129, ${greenAlpha})`);
+            }
+            
+            if (minPL < 0 && maxPL > 0) {
+                // Middle - transition zone
+                const zeroPosition = (maxPL - 0) / plRange;
+                plGradient.addColorStop(zeroPosition, 'rgba(59, 130, 246, 0.05)');
+            }
+            
+            if (minPL < 0) {
+                // Bottom part - red (loss zone)
+                const redAlpha = 0.15 + (lossIntensity * 0.25); // 0.15 to 0.4
+                plGradient.addColorStop(1, `rgba(239, 68, 68, ${redAlpha})`);
+            }
+
+            ctx.fillStyle = plGradient;
+            ctx.beginPath();
+            ctx.moveTo(paddingLeft, paddingTop + chartHeight);
+            
+            plValues.forEach((pl, i) => {
+                const x = getX(i);
+                const y = getYForPL(pl);
+                ctx.lineTo(x, y);
+            });
+            
+            ctx.lineTo(getX(plValues.length - 1), paddingTop + chartHeight);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw P&L line with dynamic color
+            // Create gradient from start to end based on P&L values
+            const lineGradient = ctx.createLinearGradient(paddingLeft, 0, paddingLeft + chartWidth, 0);
+            
+            plValues.forEach((pl, i) => {
+                const position = i / (plValues.length - 1);
+                if (pl > 0) {
+                    // Green for profit - intensity based on magnitude
+                    const intensity = Math.min(1, pl / maxPL);
+                    const greenValue = Math.floor(100 + (intensity * 155)); // 100 to 255
+                    lineGradient.addColorStop(position, `rgb(16, ${greenValue}, 129)`);
+                } else if (pl < 0) {
+                    // Red for loss - intensity based on magnitude
+                    const intensity = Math.min(1, Math.abs(pl) / Math.abs(minPL));
+                    const redValue = Math.floor(200 + (intensity * 55)); // 200 to 255
+                    lineGradient.addColorStop(position, `rgb(${redValue}, 68, 68)`);
+                } else {
+                    // Yellow for breakeven
+                    lineGradient.addColorStop(position, 'rgb(251, 191, 36)');
+                }
+            });
+
+            ctx.strokeStyle = lineGradient;
+            ctx.lineWidth = isMobile ? 2.5 : 3;
+            ctx.beginPath();
+            
+            plValues.forEach((pl, i) => {
+                const x = getX(i);
+                const y = getYForPL(pl);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Draw Spot area with gradient
+            const spotGradient = ctx.createLinearGradient(0, paddingTop, 0, paddingTop + chartHeight);
+            spotGradient.addColorStop(0, 'rgba(16, 185, 129, 0.2)');
+            spotGradient.addColorStop(1, 'rgba(16, 185, 129, 0.03)');
+
+            ctx.fillStyle = spotGradient;
+            ctx.beginPath();
+            ctx.moveTo(paddingLeft, paddingTop + chartHeight);
+            
+            spotValues.forEach((spot, i) => {
+                const x = getX(i);
+                const y = getYForSpot(spot);
+                ctx.lineTo(x, y);
+            });
+            
+            ctx.lineTo(getX(spotValues.length - 1), paddingTop + chartHeight);
+            ctx.closePath();
+            ctx.fill();
+
+            // Draw Spot line
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = isMobile ? 1.5 : 2;
+            ctx.beginPath();
+            
+            spotValues.forEach((spot, i) => {
+                const x = getX(i);
+                const y = getYForSpot(spot);
+                
+                if (i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            ctx.stroke();
+
+            // Y-axis labels (P&L - Left side)
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `bold ${labelFontSize}px Segoe UI`;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            
+            for (let i = 0; i <= gridCount; i++) {
+                const value = minPL + plRange * (gridCount - i) / gridCount;
+                const y = paddingTop + (chartHeight * i / gridCount);
+                const label = value >= 0 ? '+' + (value / 1000).toFixed(0) + 'K' : (value / 1000).toFixed(0) + 'K';
+                ctx.fillText(label, paddingLeft - (isSmallMobile ? 5 : 10), y);
+            }
+
+            // Y-axis labels (Spot - Right side)
+            ctx.textAlign = 'left';
+            for (let i = 0; i <= gridCount; i++) {
+                const value = minSpot + spotRange * (gridCount - i) / gridCount;
+                const y = paddingTop + (chartHeight * i / gridCount);
+                ctx.fillText(value.toFixed(0), width - paddingRight + (isSmallMobile ? 5 : 10), y);
+            }
+
+            // Y-axis titles (skip on very small screens)
+            if (!isSmallMobile) {
+                ctx.save();
+                ctx.translate(15, height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillStyle = '#60a5fa';
+                ctx.font = `bold ${titleFontSize}px Segoe UI`;
+                ctx.textAlign = 'center';
+                ctx.fillText(isMobile ? 'P&L (₹)' : 'Portfolio P&L (₹)', 0, 0);
+                ctx.restore();
+
+                ctx.save();
+                ctx.translate(width - 15, height / 2);
+                ctx.rotate(-Math.PI / 2);
+                ctx.fillStyle = '#10b981';
+                ctx.textAlign = 'center';
+                ctx.fillText('NIFTY', 0, 0);
+                ctx.restore();
+            }
+
+            // X-axis labels
+            ctx.fillStyle = '#9ca3af';
+            ctx.font = `${labelFontSize}px Segoe UI`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            
+            const xLabelCount = isSmallMobile ? 4 : (isMobile ? 6 : 8);
+            for (let i = 0; i < xLabelCount; i++) {
+                const index = Math.floor(i * (processedData.length - 1) / (xLabelCount - 1));
+                const x = getX(index);
+                const date = processedData[index].date.toLocaleDateString('en-IN', { 
+                    day: '2-digit', 
+                    month: 'short' 
+                });
+                ctx.fillText(date, x, paddingTop + chartHeight + (isSmallMobile ? 5 : 10));
+            }
+
+            // Legend (responsive position and size)
+            const legendY = isSmallMobile ? 10 : 15;
+            const legendWidth = isSmallMobile ? 15 : 20;
+            const legendHeight = isSmallMobile ? 2 : 3;
+            const legendFontSize = isSmallMobile ? 9 : 11;
+            
+            if (isMobile) {
+                // Mobile legend - show gradient
+                ctx.fillStyle = '#e0e6ed';
+                ctx.font = `bold ${legendFontSize}px Segoe UI`;
+                ctx.textAlign = 'left';
+                
+                // P&L with gradient indicator
+                const gradPL = ctx.createLinearGradient(width / 2 - 40, 0, width / 2 - 40 + legendWidth, 0);
+                gradPL.addColorStop(0, 'rgb(16, 185, 129)');
+                gradPL.addColorStop(0.5, 'rgb(251, 191, 36)');
+                gradPL.addColorStop(1, 'rgb(239, 68, 68)');
+                ctx.fillStyle = gradPL;
+                ctx.fillRect(width / 2 - 40, legendY, legendWidth, legendHeight);
+                ctx.fillStyle = '#e0e6ed';
+                ctx.fillText('P&L', width / 2 - 18, legendY + legendHeight);
+
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(width / 2 + 10, legendY, legendWidth, legendHeight);
+                ctx.fillStyle = '#e0e6ed';
+                ctx.fillText('Spot', width / 2 + 32, legendY + legendHeight);
+            } else {
+                // Desktop legend - show gradient
+                ctx.fillStyle = '#e0e6ed';
+                ctx.font = `bold ${legendFontSize}px Segoe UI`;
+                ctx.textAlign = 'left';
+                
+                // P&L with gradient indicator
+                const gradPL = ctx.createLinearGradient(width / 2 - 80, 0, width / 2 - 80 + legendWidth, 0);
+                gradPL.addColorStop(0, 'rgb(16, 185, 129)');
+                gradPL.addColorStop(0.5, 'rgb(251, 191, 36)');
+                gradPL.addColorStop(1, 'rgb(239, 68, 68)');
+                ctx.fillStyle = gradPL;
+                ctx.fillRect(width / 2 - 80, legendY, legendWidth, legendHeight);
+                ctx.fillStyle = '#e0e6ed';
+                ctx.fillText('Portfolio P&L', width / 2 - 55, legendY + legendHeight);
+
+                ctx.fillStyle = '#10b981';
+                ctx.fillRect(width / 2 + 25, legendY, legendWidth, legendHeight);
+                ctx.fillStyle = '#e0e6ed';
+                ctx.fillText('NIFTY Spot', width / 2 + 50, legendY + legendHeight);
+            }
+
+            // Tooltip functionality
+            let tooltipDiv = document.getElementById('chartTooltip');
+            if (!tooltipDiv) {
+                tooltipDiv = document.createElement('div');
+                tooltipDiv.id = 'chartTooltip';
+                tooltipDiv.style.cssText = `
+                    position: absolute;
+                    background: rgba(26, 35, 50, 0.95);
+                    border: 1px solid #374151;
+                    border-radius: 6px;
+                    padding: 10px 12px;
+                    font-size: 11px;
+                    color: #e0e6ed;
+                    pointer-events: none;
+                    display: none;
+                    z-index: 1000;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                    line-height: 1.6;
+                `;
+                document.body.appendChild(tooltipDiv);
+            }
+
+            const showTooltip = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                // Check if mouse is within chart area
+                if (mouseX < paddingLeft || mouseX > width - paddingRight ||
+                    mouseY < paddingTop || mouseY > paddingTop + chartHeight) {
+                    tooltipDiv.style.display = 'none';
+                    return;
+                }
+
+                // Find nearest data point - use original data for accuracy
+                const relativeX = mouseX - paddingLeft;
+                const dataIndex = Math.round((relativeX / chartWidth) * (dailyData.length - 1));
+                
+                if (dataIndex >= 0 && dataIndex < dailyData.length) {
+                    const data = dailyData[dataIndex];
+                    const date = data.date.toLocaleDateString('en-IN', { 
+                        day: '2-digit', 
+                        month: 'short',
+                        year: 'numeric'
+                    });
+
+                    const plColor = data.totalPL >= 0 ? '#10b981' : '#ef4444';
+                    
+                    tooltipDiv.innerHTML = `
+                        <div style="font-weight: 600; margin-bottom: 6px; color: #60a5fa;">${date}</div>
+                        <div style="color: #10b981;">NIFTY Spot: ${formatNumber(data.spot)}</div>
+                        <div>Put Price: ${formatNumber(data.putPrice)}</div>
+                        <div>Call Price: ${formatNumber(data.callPrice)}</div>
+                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #374151; font-weight: 600; color: ${plColor};">
+                            Total P&L: ${formatINR(data.totalPL)}
+                        </div>
+                    `;
+
+                    tooltipDiv.style.display = 'block';
+                    
+                    // Position tooltip smartly to avoid going off-screen
+                    let tooltipX = e.clientX + 15;
+                    let tooltipY = e.clientY + 15;
+                    
+                    if (tooltipX + 200 > window.innerWidth) {
+                        tooltipX = e.clientX - 215;
+                    }
+                    if (tooltipY + 150 > window.innerHeight) {
+                        tooltipY = e.clientY - 155;
+                    }
+                    
+                    tooltipDiv.style.left = tooltipX + 'px';
+                    tooltipDiv.style.top = tooltipY + 'px';
+
+                    // Find corresponding point in processed data
+                    const processedIndex = processedData.findIndex(d => d.date.getTime() === data.date.getTime());
+                    if (processedIndex >= 0) {
+                        // Draw crosshair
+                        ctx.save();
+                        ctx.setLineDash([5, 5]);
+                        ctx.strokeStyle = '#60a5fa';
+                        ctx.lineWidth = 1;
+                        
+                        const pointX = getX(processedIndex);
+                        const pointYPL = getYForPL(data.totalPL);
+                        const pointYSpot = getYForSpot(data.spot);
+                        
+                        // Vertical line
+                        ctx.beginPath();
+                        ctx.moveTo(pointX, paddingTop);
+                        ctx.lineTo(pointX, paddingTop + chartHeight);
+                        ctx.stroke();
+                        
+                        // Draw points
+                        ctx.setLineDash([]);
+                        const pointSize = isMobile ? 3 : 4;
+                        
+                        // Dynamic color for P&L point
+                        let plPointColor;
+                        if (data.totalPL > 0) {
+                            const intensity = Math.min(1, data.totalPL / maxPL);
+                            const greenValue = Math.floor(100 + (intensity * 155));
+                            plPointColor = `rgb(16, ${greenValue}, 129)`;
+                        } else if (data.totalPL < 0) {
+                            const intensity = Math.min(1, Math.abs(data.totalPL) / Math.abs(minPL));
+                            const redValue = Math.floor(200 + (intensity * 55));
+                            plPointColor = `rgb(${redValue}, 68, 68)`;
+                        } else {
+                            plPointColor = 'rgb(251, 191, 36)';
+                        }
+                        
+                        ctx.fillStyle = plPointColor;
+                        ctx.beginPath();
+                        ctx.arc(pointX, pointYPL, pointSize, 0, 2 * Math.PI);
+                        ctx.fill();
+
+                        ctx.fillStyle = '#10b981';
+                        ctx.beginPath();
+                        ctx.arc(pointX, pointYSpot, pointSize, 0, 2 * Math.PI);
+                        ctx.fill();
+                        
+                        ctx.restore();
+                    }
+                }
+            };
+
+            const hideTooltip = () => {
+                tooltipDiv.style.display = 'none';
+                // Redraw chart without crosshair
+                updateChart(dailyData);
+            };
+
+            // Remove old listeners
+            canvas.onmousemove = null;
+            canvas.onmouseleave = null;
+            canvas.ontouchmove = null;
+            canvas.ontouchend = null;
+            
+            // Add new listeners for mouse
+            canvas.onmousemove = showTooltip;
+            canvas.onmouseleave = hideTooltip;
+            
+            // Add touch support for mobile
+            canvas.ontouchmove = (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                showTooltip(mouseEvent);
+            };
+            
+            canvas.ontouchend = (e) => {
+                e.preventDefault();
+                hideTooltip();
+            };
+
+            chartInstance = { 
+                destroy: () => {
+                    canvas.onmousemove = null;
+                    canvas.onmouseleave = null;
+                    canvas.ontouchmove = null;
+                    canvas.ontouchend = null;
+                }
+            };
+        }
+
+        async function loadData() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            
+            statusIndicator.className = 'status-indicator loading';
+            statusIndicator.textContent = 'Fetching latest data from GitHub...';
+
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const csvText = await response.text();
+                const priceData = parseCSV(csvText);
+                
+                if (priceData.length === 0) {
+                    throw new Error('No valid data found in CSV');
+                }
+
+                portfolioData = calculatePortfolio(priceData);
+                
+                updateSnapshotTable(portfolioData);
+                updatePayoffTable(portfolioData.dailyData);
+                updateChart(portfolioData.dailyData);
+                
+                const lastDate = priceData[priceData.length - 1].date.toLocaleDateString('en-IN');
+                statusIndicator.className = 'status-indicator success';
+                statusIndicator.textContent = `✓ Data loaded successfully • Last updated: ${lastDate}`;
+                
+            } catch (error) {
+                statusIndicator.className = 'status-indicator error';
+                statusIndicator.textContent = `✗ Error loading data: ${error.message}`;
+                console.error('Load error:', error);
+            }
+        }
+
+        // Auto-load data on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadData();
+        });
+
+        // Debounced resize handler for better performance
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (portfolioData) {
+                    updateChart(portfolioData.dailyData);
+                }
+            }, 250);
+        });
+    </script>
+</body>
+</html>
