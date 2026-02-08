@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIFTY Options Portfolio Dashboard</title>
+</head>
+<body>
+    <div id="niftyDashboard" style="
+        width: 100%;
+        height: 100vh;
+        min-height: 600px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #0a0e27;
+        color: #e0e6ed;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    ">
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            #niftyDashboard .dashboard {
+                display: flex;
+                flex-direction: column;
+                height: 100vh;
+            }
+
+            #niftyDashboard .dashboard-content {
+                display: flex;
+                flex: 1;
+                padding: 12px;
+                gap: 12px;
+                overflow: hidden;
+            }
+
+            /* Left Panel - Portfolio Snapshot */
+            #niftyDashboard .left-panel {
+                width: 35%;
+                background: #141b2d;
+                border-radius: 8px;
+                border: 1px solid #1f2937;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Snapshot Cards Container */
+            #niftyDashboard .snapshot-cards {
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                overflow-y: auto;
+            }
+
+            /* Card Base */
+            #niftyDashboard .portfolio-card {
+                background: #1a2332;
+                border-radius: 12px;
+                border: 1px solid #374151;
+                padding: 16px;
+                transition: all 0.3s ease;
+                cursor: default;
+            }
+
+            #niftyDashboard .portfolio-card:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+                border-color: #4b5563;
+            }
+
+            /* Total Card - Hero */
+            #niftyDashboard .total-card {
+                background: linear-gradient(135deg, #1e293b 0%, #1a2332 100%);
+                border: 2px solid #374151;
+                padding: 20px;
+                text-align: center;
+            }
+
+            #niftyDashboard .total-card:hover {
+                border-color: #60a5fa;
+                box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+                background: linear-gradient(135deg, #1e3a5f 0%, #1a2f4a 100%);
+            }
+
+            #niftyDashboard .total-card-header {
+                font-size: 11px;
+                color: #9ca3af;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin-bottom: 12px;
+                font-weight: 600;
+            }
+
+            #niftyDashboard .total-card-value {
+                font-size: 32px;
+                font-weight: 700;
+                line-height: 1.2;
+            }
+
+            #niftyDashboard .total-card-value.positive {
+                color: #10b981;
+                text-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+            }
+
+            #niftyDashboard .total-card-value.negative {
+                color: #ef4444;
+                text-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+            }
+
+            /* Position Cards */
+            #niftyDashboard .position-card {
+                position: relative;
+            }
+
+            #niftyDashboard .position-card:hover {
+                background: #1f2937;
+            }
+
+            #niftyDashboard .position-card.positive-card:hover {
+                border-color: #10b981;
+                box-shadow: 0 0 16px rgba(16, 185, 129, 0.2);
+            }
+
+            #niftyDashboard .position-card.negative-card:hover {
+                border-color: #ef4444;
+                box-shadow: 0 0 16px rgba(239, 68, 68, 0.2);
+            }
+
+            #niftyDashboard .card-title-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            #niftyDashboard .card-symbol {
+                font-size: 13px;
+                font-weight: 600;
+                color: #e0e6ed;
+                letter-spacing: 0.3px;
+            }
+
+            #niftyDashboard .card-pnl-big {
+                font-size: 20px;
+                font-weight: 700;
+                line-height: 1;
+            }
+
+            #niftyDashboard .card-pnl-big.positive {
+                color: #10b981;
+            }
+
+            #niftyDashboard .card-pnl-big.negative {
+                color: #ef4444;
+            }
+
+            #niftyDashboard .card-details {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            #niftyDashboard .card-detail-row {
+                font-size: 10px;
+                color: #9ca3af;
+                display: flex;
+                justify-content: space-between;
+            }
+
+            #niftyDashboard .card-detail-row .label {
+                color: #6b7280;
+            }
+
+            #niftyDashboard .card-detail-row .value {
+                color: #d1d5db;
+                font-weight: 500;
+            }
+
+            /* Right Panel - Tabs */
+            #niftyDashboard .right-panel {
+                width: 65%;
+                background: #141b2d;
+                border-radius: 8px;
+                border: 1px solid #1f2937;
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Panel Header */
+            #niftyDashboard .panel-header {
+                background: #1a2332;
+                padding: 12px 16px;
+                border-bottom: 1px solid #1f2937;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.5px;
+                color: #60a5fa;
+            }
+
+            /* Status Indicator */
+            #niftyDashboard .status-indicator {
+                padding: 8px 16px;
+                background: #1a2332;
+                border-bottom: 1px solid #1f2937;
+                font-size: 11px;
+                text-align: center;
+            }
+
+            #niftyDashboard .status-indicator.loading { color: #60a5fa; }
+            #niftyDashboard .status-indicator.success { color: #10b981; }
+            #niftyDashboard .status-indicator.error { color: #ef4444; }
+
+            /* Tabs - Desktop Right Side */
+            #niftyDashboard .desktop-tabs {
+                display: flex;
+                background: #1a2332;
+                border-bottom: 1px solid #1f2937;
+            }
+
+            #niftyDashboard .tab-btn {
+                flex: 1;
+                padding: 12px 20px;
+                background: transparent;
+                border: none;
+                border-bottom: 3px solid transparent;
+                color: #9ca3af;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+
+            #niftyDashboard .tab-btn:hover {
+                color: #e0e6ed;
+                background: rgba(59, 130, 246, 0.1);
+            }
+
+            #niftyDashboard .tab-btn.active {
+                color: #60a5fa;
+                border-bottom-color: #3b82f6;
+                background: rgba(59, 130, 246, 0.05);
+            }
+
+            /* Tab Content */
+            #niftyDashboard .tab-content {
+                display: none;
+                flex: 1;
+                overflow: hidden;
+            }
+
+            #niftyDashboard .tab-content.active {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* Panel Content */
+            #niftyDashboard .panel-content {
+                flex: 1;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            /* Tables */
+            #niftyDashboard table {
+                width: 100%;
+                border-collapse: collapse;
+                font-size: 12px;
+            }
+
+            #niftyDashboard thead {
+                position: sticky;
+                top: 0;
+                background: #1a2332;
+                z-index: 10;
+            }
+
+            #niftyDashboard th {
+                padding: 8px 6px;
+                text-align: right;
+                font-weight: 600;
+                color: #9ca3af;
+                border-bottom: 1px solid #1f2937;
+                font-size: 10px;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
+                white-space: nowrap;
+            }
+
+            #niftyDashboard th:first-child {
+                text-align: left;
+            }
+
+            #niftyDashboard td {
+                padding: 7px 6px;
+                text-align: right;
+                border-bottom: 1px solid #1f2937;
+                white-space: nowrap;
+                font-size: 11px;
+            }
+
+            #niftyDashboard td:first-child {
+                text-align: left;
+                font-weight: 500;
+            }
+
+            #niftyDashboard tbody tr:hover {
+                background: #1a2332;
+            }
+
+            #niftyDashboard .total-row {
+                background: #1a2332 !important;
+                font-weight: 700;
+                border-top: 2px solid #374151;
+            }
+
+            #niftyDashboard .positive { color: #10b981; }
+            #niftyDashboard .negative { color: #ef4444; }
+
+            /* Payoff Table Compact Columns */
+            #niftyDashboard #payoffTable th:nth-child(1) { width: 70px; padding: 8px 4px; }
+            #niftyDashboard #payoffTable th:nth-child(2) { width: 75px; padding: 8px 4px; }
+            #niftyDashboard #payoffTable th:nth-child(3) { width: 75px; padding: 8px 4px; }
+            #niftyDashboard #payoffTable th:nth-child(4) { width: 75px; padding: 8px 4px; }
+            #niftyDashboard #payoffTable th:nth-child(5) { width: 100px; padding: 8px 6px; }
+
+            #niftyDashboard #payoffTable td:nth-child(1) {
+                font-size: 10px;
+                padding: 7px 4px;
+            }
+
+            #niftyDashboard #payoffTable td:nth-child(2),
+            #niftyDashboard #payoffTable td:nth-child(3),
+            #niftyDashboard #payoffTable td:nth-child(4),
+            #niftyDashboard #payoffTable td:nth-child(5) {
+                padding: 7px 4px;
+            }
+
+            /* Main Portfolio Header */
+            #niftyDashboard .main-header {
+                background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+                padding: 16px 20px;
+                text-align: center;
+                border-bottom: 2px solid #3b82f6;
+            }
+
+            #niftyDashboard .main-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: #60a5fa;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                margin: 0;
+            }
+
+            #niftyDashboard .main-subtitle {
+                font-size: 11px;
+                color: #9ca3af;
+                margin-top: 4px;
+                letter-spacing: 0.5px;
+            }
+
+            /* Chart Container */
+            #niftyDashboard .chart-wrapper {
+                flex: 1;
+                padding: 16px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            /* Loading Spinner */
+            #niftyDashboard .loading {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                height: 100%;
+                color: #6b7280;
+                font-size: 13px;
+            }
+
+            #niftyDashboard .spinner {
+                border: 3px solid #1f2937;
+                border-top: 3px solid #60a5fa;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: spin 1s linear infinite;
+                margin-bottom: 12px;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+
+            /* Scrollbar */
+            #niftyDashboard ::-webkit-scrollbar {
+                width: 6px;
+                height: 6px;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-track {
+                background: #0a0e27;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-thumb {
+                background: #374151;
+                border-radius: 3px;
+            }
+
+            #niftyDashboard ::-webkit-scrollbar-thumb:hover {
+                background: #4b5563;
+            }
+
+            /* Tooltip */
+            #niftyDashboard .chart-tooltip {
+                position: fixed;
+                background: rgba(10, 14, 39, 0.98);
+                border: 2px solid #60a5fa;
+                border-radius: 8px;
+                padding: 10px 12px;
+                font-size: 11px;
+                color: #e0e6ed;
+                pointer-events: none;
+                display: none;
+                z-index: 10000;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5), 0 0 20px rgba(96, 165, 250, 0.2);
+                line-height: 1.6;
+                white-space: nowrap;
+            }
+
+            /* Mobile Styles */
+            @media (max-width: 768px) {
+                #niftyDashboard .dashboard {
+                    height: auto;
+                    min-height: 100vh;
+                }
+
+                #niftyDashboard .main-header {
+                    padding: 12px 16px;
+                }
+
+                #niftyDashboard .main-title {
+                    font-size: 16px;
+                }
+
+                #niftyDashboard .main-subtitle {
+                    font-size: 10px;
+                }
+
+                #niftyDashboard .dashboard-content {
+                    flex-direction: column;
+                    height: auto;
+                    min-height: calc(100vh - 80px);
+                    padding: 8px;
+                    gap: 0;
+                }
+
+                #niftyDashboard .left-panel,
+                #niftyDashboard .right-panel {
+                    width: 100%;
+                }
+
+                #niftyDashboard .left-panel {
+                    display: none;
+                }
+
+                #niftyDashboard .desktop-tabs {
+                    display: none;
+                }
+
+                #niftyDashboard .mobile-tabs {
+                    display: flex !important;
+                    background: #1a2332;
+                    border-radius: 8px;
+                    padding: 6px;
+                    gap: 6px;
+                    margin: 8px;
+                }
+
+                #niftyDashboard .mobile-tab-btn {
+                    flex: 1;
+                    padding: 10px 12px;
+                    background: transparent;
+                    border: none;
+                    border-radius: 6px;
+                    color: #9ca3af;
+                    font-size: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    white-space: nowrap;
+                }
+
+                #niftyDashboard .mobile-tab-btn.active {
+                    background: #3b82f6;
+                    color: #ffffff;
+                }
+
+                #niftyDashboard .tab-content {
+                    height: calc(100vh - 160px);
+                    min-height: 500px;
+                }
+
+                #niftyDashboard .chart-wrapper {
+                    height: 100%;
+                    min-height: 400px;
+                }
+
+                #niftyDashboard #payoffTable {
+                    font-size: 10px;
+                }
+
+                #niftyDashboard #payoffTable th,
+                #niftyDashboard #payoffTable td {
+                    padding: 6px 3px;
+                    font-size: 9px;
+                }
+
+                #niftyDashboard .card-pnl-big {
+                    font-size: 14px;
+                }
+
+                #niftyDashboard .total-card-value {
+                    font-size: 24px;
+                }
+            }
+
+            /* Desktop - Hide Mobile Tabs */
+            @media (min-width: 769px) {
+                #niftyDashboard .mobile-tabs {
+                    display: none;
+                }
+            }
+        </style>
+
+        <div class="dashboard">
+            <!-- Main Header -->
+            <div class="main-header">
+                <h1 class="main-title">Portfolio Dashboard</h1>
+                <div class="main-subtitle">Year 2026 • NIFTY Options Strategy</div>
+            </div>
+
+            <!-- Mobile Tabs -->
+            <div class="mobile-tabs">
+                <button class="mobile-tab-btn active" onclick="switchMobileTab('snapshot')">📊 Summary</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('chart')">📈 Chart</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('payoff')">📋 History</button>
+            </div>
+
+            <div class="dashboard-content">
+            <!-- Left Panel: Portfolio Snapshot -->
+            <div class="left-panel">
+                <div class="panel-header">PORTFOLIO SNAPSHOT</div>
+                <div id="statusIndicator" class="status-indicator loading">Loading data from GitHub...</div>
+                <div class="snapshot-cards" id="snapshotCards">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>Loading...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Tabs (Chart & Payoff Table) -->
+            <div class="right-panel">
+                <!-- Desktop Tabs -->
+                <div class="desktop-tabs">
+                    <button class="tab-btn active" onclick="switchTab('chart')">📈 Chart</button>
+                    <button class="tab-btn" onclick="switchTab('payoff')">📋 Daily Payoff Table</button>
+                </div>
+
+                <!-- Tab Content: Chart -->
+                <div id="tabChart" class="tab-content active">
+                    <div class="chart-wrapper" id="chartContainer">
+                        <div class="loading">
+                            <div class="spinner"></div>
+                            <div>Loading chart...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Content: Payoff Table -->
+                <div id="tabPayoff" class="tab-content">
+                    <div class="panel-content">
+                        <table id="payoffTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Spot</th>
+                                    <th>Put</th>
+                                    <th>Call</th>
+                                    <th>P&L (₹)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="5" class="loading">
+                                        <div class="spinner"></div>
+                                        <div>Loading...</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- End dashboard-content -->
+        </div> <!-- End dashboard -->
+    </div> <!-- End niftyDashboard -->
+
+    <script>
+        // CSV Data Source
+        const CSV_URL = "https://raw.githubusercontent.com/Vidyasagar29/nifty-close-data/main/nifty_close.csv";
+
+        // Portfolio Parameters
+        const PORTFOLIO = {
+            quantity: 2475,
+            putStrike: 25000,
+            callStrike: 29000,
+            putIV: 0.16,
+            callIV: 0.09,
+            riskFreeRate: 0.10,
+            expiryDate: new Date('2026-12-29')
+        };
+
+        let portfolioData = null;
+
+        // Tab Switching - Desktop
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById('tab' + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add('active');
+            
+            if (tabName === 'chart' && portfolioData) {
+                setTimeout(() => updateChart(portfolioData.dailyData), 50);
+            }
+        }
+
+        // Tab Switching - Mobile
+        function switchMobileTab(tabName) {
+            document.querySelectorAll('.mobile-tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            const leftPanel = document.querySelector('.left-panel');
+            const tabChart = document.getElementById('tabChart');
+            const tabPayoff = document.getElementById('tabPayoff');
+            
+            leftPanel.style.display = 'none';
+            tabChart.classList.remove('active');
+            tabPayoff.classList.remove('active');
+            
+            if (tabName === 'snapshot') {
+                leftPanel.style.display = 'flex';
+            } else if (tabName === 'chart') {
+                tabChart.classList.add('active');
+                if (portfolioData) {
+                    setTimeout(() => updateChart(portfolioData.dailyData), 50);
+                }
+            } else if (tabName === 'payoff') {
+                tabPayoff.classList.add('active');
+            }
+        }
+
+        // Format Functions
+        function formatINR(value) {
+            return '₹' + value.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatNumber(value) {
+            return value.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        // Black-Scholes Implementation
+        function cumulativeNormalDistribution(x) {
+            const t = 1 / (1 + 0.2316419 * Math.abs(x));
+            const d = 0.3989423 * Math.exp(-x * x / 2);
+            const prob = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+            return x > 0 ? 1 - prob : prob;
+        }
+
+        function blackScholes(spot, strike, timeToExpiry, riskFreeRate, volatility, optionType) {
+            if (timeToExpiry <= 0) {
+                if (optionType === 'call') {
+                    return Math.max(spot - strike, 0);
+                } else {
+                    return Math.max(strike - spot, 0);
+                }
+            }
+
+            const d1 = (Math.log(spot / strike) + (riskFreeRate + 0.5 * volatility * volatility) * timeToExpiry) / 
+                       (volatility * Math.sqrt(timeToExpiry));
+            const d2 = d1 - volatility * Math.sqrt(timeToExpiry);
+
+            if (optionType === 'call') {
+                return spot * cumulativeNormalDistribution(d1) - 
+                       strike * Math.exp(-riskFreeRate * timeToExpiry) * cumulativeNormalDistribution(d2);
+            } else {
+                return strike * Math.exp(-riskFreeRate * timeToExpiry) * cumulativeNormalDistribution(-d2) - 
+                       spot * cumulativeNormalDistribution(-d1);
+            }
+        }
+
+        // Parse CSV
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const [dateStr, closeStr] = line.split(',');
+                const date = new Date(dateStr.trim());
+                const close = parseFloat(closeStr.trim());
+                
+                if (!isNaN(date.getTime()) && !isNaN(close)) {
+                    data.push({ date, close });
+                }
+            }
+            
+            data.sort((a, b) => a.date - b.date);
+            return data;
+        }
+
+        // Calculate Portfolio
+        function calculatePortfolio(priceData) {
+            if (priceData.length === 0) return null;
+
+            const startDate = priceData[0].date;
+            const startSpot = priceData[0].close;
+            
+            const startTimeToExpiry = (PORTFOLIO.expiryDate - startDate) / (1000 * 60 * 60 * 24 * 365);
+            
+            const startPutPrice = blackScholes(
+                startSpot, 
+                PORTFOLIO.putStrike, 
+                startTimeToExpiry, 
+                PORTFOLIO.riskFreeRate, 
+                PORTFOLIO.putIV, 
+                'put'
+            );
+            
+            const startCallPrice = blackScholes(
+                startSpot, 
+                PORTFOLIO.callStrike, 
+                startTimeToExpiry, 
+                PORTFOLIO.riskFreeRate, 
+                PORTFOLIO.callIV, 
+                'call'
+            );
+
+            const dailyData = priceData.map(entry => {
+                const timeToExpiry = Math.max(0, (PORTFOLIO.expiryDate - entry.date) / (1000 * 60 * 60 * 24 * 365));
+                
+                const putPrice = blackScholes(
+                    entry.close, 
+                    PORTFOLIO.putStrike, 
+                    timeToExpiry, 
+                    PORTFOLIO.riskFreeRate, 
+                    PORTFOLIO.putIV, 
+                    'put'
+                );
+                
+                const callPrice = blackScholes(
+                    entry.close, 
+                    PORTFOLIO.callStrike, 
+                    timeToExpiry, 
+                    PORTFOLIO.riskFreeRate, 
+                    PORTFOLIO.callIV, 
+                    'call'
+                );
+
+                const spotPL = (entry.close - startSpot) * PORTFOLIO.quantity;
+                const putPL = (putPrice - startPutPrice) * PORTFOLIO.quantity;
+                const callPL = (startCallPrice - callPrice) * PORTFOLIO.quantity;
+                const totalPL = spotPL + putPL + callPL;
+
+                return {
+                    date: entry.date,
+                    spot: entry.close,
+                    putPrice: putPrice,
+                    callPrice: callPrice,
+                    totalPL: totalPL
+                };
+            });
+
+            const latestData = dailyData[dailyData.length - 1];
+
+            return {
+                startSpot,
+                startPutPrice,
+                startCallPrice,
+                latest: latestData,
+                dailyData: dailyData
+            };
+        }
+
+        // Format INR with Indian style commas (lakhs/crores)
+        function formatINRFull(value) {
+            const isNegative = value < 0;
+            const absValue = Math.abs(value);
+            
+            // Indian number format: XX,XX,XXX.XX
+            const formatted = absValue.toLocaleString('en-IN', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            return (isNegative ? '-₹' : '₹') + formatted;
+        }
+
+        // Update Snapshot Cards
+        function updateSnapshotTable(portfolio) {
+            const container = document.getElementById('snapshotCards');
+            
+            const spotPL = (portfolio.latest.spot - portfolio.startSpot) * PORTFOLIO.quantity;
+            const putPL = (portfolio.latest.putPrice - portfolio.startPutPrice) * PORTFOLIO.quantity;
+            const callPL = (portfolio.startCallPrice - portfolio.latest.callPrice) * PORTFOLIO.quantity;
+            const totalPL = portfolio.latest.totalPL;
+
+            container.innerHTML = `
+                <!-- Total Portfolio Card -->
+                <div class="portfolio-card total-card">
+                    <div class="total-card-header">Total Portfolio P&L</div>
+                    <div class="total-card-value ${totalPL >= 0 ? 'positive' : 'negative'}">
+                        ${formatINRFull(totalPL)}
+                    </div>
+                </div>
+
+                <!-- NIFTY Spot Card -->
+                <div class="portfolio-card position-card ${spotPL >= 0 ? 'positive-card' : 'negative-card'}">
+                    <div class="card-title-row">
+                        <div class="card-symbol">NIFTY SPOT</div>
+                        <div class="card-pnl-big ${spotPL >= 0 ? 'positive' : 'negative'}">
+                            ${formatINRFull(spotPL)}
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="card-detail-row">
+                            <span class="label">Quantity:</span>
+                            <span class="value">${PORTFOLIO.quantity.toLocaleString()}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Buy Price:</span>
+                            <span class="value">${formatNumber(portfolio.startSpot)}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Current Price:</span>
+                            <span class="value">${formatNumber(portfolio.latest.spot)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUT Card -->
+                <div class="portfolio-card position-card ${putPL >= 0 ? 'positive-card' : 'negative-card'}">
+                    <div class="card-title-row">
+                        <div class="card-symbol">PUT 25000</div>
+                        <div class="card-pnl-big ${putPL >= 0 ? 'positive' : 'negative'}">
+                            ${formatINRFull(putPL)}
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="card-detail-row">
+                            <span class="label">Quantity:</span>
+                            <span class="value">${PORTFOLIO.quantity.toLocaleString()}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Buy Price:</span>
+                            <span class="value">${formatNumber(portfolio.startPutPrice)}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Current Price:</span>
+                            <span class="value">${formatNumber(portfolio.latest.putPrice)}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CALL Card -->
+                <div class="portfolio-card position-card ${callPL >= 0 ? 'positive-card' : 'negative-card'}">
+                    <div class="card-title-row">
+                        <div class="card-symbol">CALL 29000</div>
+                        <div class="card-pnl-big ${callPL >= 0 ? 'positive' : 'negative'}">
+                            ${formatINRFull(callPL)}
+                        </div>
+                    </div>
+                    <div class="card-details">
+                        <div class="card-detail-row">
+                            <span class="label">Quantity:</span>
+                            <span class="value">${PORTFOLIO.quantity.toLocaleString()}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Sell Price:</span>
+                            <span class="value">${formatNumber(portfolio.startCallPrice)}</span>
+                        </div>
+                        <div class="card-detail-row">
+                            <span class="label">Current Price:</span>
+                            <span class="value">${formatNumber(portfolio.latest.callPrice)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Update Payoff Table
+        function updatePayoffTable(dailyData) {
+            const tbody = document.querySelector('#payoffTable tbody');
+            
+            tbody.innerHTML = dailyData.map(row => {
+                const dateStr = row.date.toLocaleDateString('en-GB', { 
+                    day: '2-digit', 
+                    month: '2-digit', 
+                    year: '2-digit' 
+                });
+                
+                return `
+                    <tr>
+                        <td>${dateStr}</td>
+                        <td>${formatNumber(row.spot)}</td>
+                        <td>${formatNumber(row.putPrice)}</td>
+                        <td>${formatNumber(row.callPrice)}</td>
+                        <td class="${row.totalPL >= 0 ? 'positive' : 'negative'}">${formatINR(row.totalPL)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Update Chart with SVG and Hover
+        function updateChart(dailyData) {
+            const container = document.getElementById('chartContainer');
+            if (!container) return;
+
+            container.innerHTML = '';
+
+            const isMobile = window.innerWidth <= 768;
+            const width = container.offsetWidth || 400;
+            const height = container.offsetHeight || 400;
+            
+            const margin = { top: 40, right: 60, bottom: 40, left: 60 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+
+            const plValues = dailyData.map(d => d.totalPL);
+            const spotValues = dailyData.map(d => d.spot);
+            
+            const maxPL = Math.max(...plValues);
+            const minPL = Math.min(...plValues);
+            const maxSpot = Math.max(...spotValues);
+            const minSpot = Math.min(...spotValues);
+
+            const plRange = maxPL - minPL || 1;
+            const spotRange = maxSpot - minSpot || 1;
+
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+            svg.style.background = '#141b2d';
+
+            const xScale = (i) => margin.left + (i / (dailyData.length - 1)) * chartWidth;
+            const yScalePL = (value) => margin.top + chartHeight - ((value - minPL) / plRange) * chartHeight;
+            const yScaleSpot = (value) => margin.top + chartHeight - ((value - minSpot) / spotRange) * chartHeight;
+
+            // Grid
+            for (let i = 0; i <= 5; i++) {
+                const y = margin.top + (chartHeight * i / 5);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', margin.left);
+                line.setAttribute('y1', y);
+                line.setAttribute('x2', width - margin.right);
+                line.setAttribute('y2', y);
+                line.setAttribute('stroke', '#1f2937');
+                line.setAttribute('stroke-width', '1');
+                svg.appendChild(line);
+            }
+
+            // Zero line
+            if (minPL < 0 && maxPL > 0) {
+                const zeroY = yScalePL(0);
+                const zeroLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                zeroLine.setAttribute('x1', margin.left);
+                zeroLine.setAttribute('y1', zeroY);
+                zeroLine.setAttribute('x2', width - margin.right);
+                zeroLine.setAttribute('y2', zeroY);
+                zeroLine.setAttribute('stroke', '#fbbf24');
+                zeroLine.setAttribute('stroke-width', '2');
+                zeroLine.setAttribute('stroke-dasharray', '6,4');
+                svg.appendChild(zeroLine);
+
+                const zeroText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                zeroText.setAttribute('x', margin.left - 5);
+                zeroText.setAttribute('y', zeroY - 5);
+                zeroText.setAttribute('fill', '#fbbf24');
+                zeroText.setAttribute('font-size', '10');
+                zeroText.setAttribute('font-weight', 'bold');
+                zeroText.setAttribute('text-anchor', 'end');
+                zeroText.textContent = 'ZERO';
+                svg.appendChild(zeroText);
+            }
+
+            // P&L Area
+            const plAreaPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let plAreaD = `M ${margin.left} ${margin.top + chartHeight} `;
+            dailyData.forEach((d, i) => {
+                plAreaD += `L ${xScale(i)} ${yScalePL(d.totalPL)} `;
+            });
+            plAreaD += `L ${xScale(dailyData.length - 1)} ${margin.top + chartHeight} Z`;
+            plAreaPath.setAttribute('d', plAreaD);
+            plAreaPath.setAttribute('fill', '#3b82f6');
+            plAreaPath.setAttribute('opacity', '0.2');
+            svg.appendChild(plAreaPath);
+
+            // P&L Line
+            const plLinePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let plLineD = '';
+            dailyData.forEach((d, i) => {
+                plLineD += (i === 0 ? `M ` : ` L `) + `${xScale(i)} ${yScalePL(d.totalPL)}`;
+            });
+            plLinePath.setAttribute('d', plLineD);
+            plLinePath.setAttribute('fill', 'none');
+            plLinePath.setAttribute('stroke', '#3b82f6');
+            plLinePath.setAttribute('stroke-width', '3');
+            svg.appendChild(plLinePath);
+
+            // Spot Line
+            const spotLinePath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            let spotLineD = '';
+            dailyData.forEach((d, i) => {
+                spotLineD += (i === 0 ? `M ` : ` L `) + `${xScale(i)} ${yScaleSpot(d.spot)}`;
+            });
+            spotLinePath.setAttribute('d', spotLineD);
+            spotLinePath.setAttribute('fill', 'none');
+            spotLinePath.setAttribute('stroke', '#10b981');
+            spotLinePath.setAttribute('stroke-width', '2');
+            svg.appendChild(spotLinePath);
+
+            // Y Labels (P&L)
+            for (let i = 0; i <= 5; i++) {
+                const value = minPL + plRange * (5 - i) / 5;
+                const y = margin.top + (chartHeight * i / 5);
+                const label = (value >= 0 ? '+' : '') + (value / 1000).toFixed(0) + 'K';
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', margin.left - 10);
+                text.setAttribute('y', y + 4);
+                text.setAttribute('fill', '#9ca3af');
+                text.setAttribute('font-size', '10');
+                text.setAttribute('text-anchor', 'end');
+                text.textContent = label;
+                svg.appendChild(text);
+            }
+
+            // Y Labels (Spot)
+            for (let i = 0; i <= 5; i++) {
+                const value = minSpot + spotRange * (5 - i) / 5;
+                const y = margin.top + (chartHeight * i / 5);
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', width - margin.right + 10);
+                text.setAttribute('y', y + 4);
+                text.setAttribute('fill', '#9ca3af');
+                text.setAttribute('font-size', '10');
+                text.textContent = value.toFixed(0);
+                svg.appendChild(text);
+            }
+
+            // X Labels
+            const labelCount = isMobile ? 4 : 6;
+            for (let i = 0; i < labelCount; i++) {
+                const index = Math.floor(i * (dailyData.length - 1) / (labelCount - 1));
+                const date = dailyData[index].date.toLocaleDateString('en-IN', { 
+                    day: '2-digit', 
+                    month: 'short' 
+                });
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', xScale(index));
+                text.setAttribute('y', margin.top + chartHeight + 25);
+                text.setAttribute('fill', '#9ca3af');
+                text.setAttribute('font-size', '9');
+                text.setAttribute('text-anchor', 'middle');
+                text.textContent = date;
+                svg.appendChild(text);
+            }
+
+            // Legend
+            const legendY = 15;
+            ['P&L', 'Spot'].forEach((label, idx) => {
+                const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+                rect.setAttribute('x', width / 2 - 60 + idx * 80);
+                rect.setAttribute('y', legendY);
+                rect.setAttribute('width', '20');
+                rect.setAttribute('height', '3');
+                rect.setAttribute('fill', idx === 0 ? '#3b82f6' : '#10b981');
+                svg.appendChild(rect);
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', width / 2 - 35 + idx * 80);
+                text.setAttribute('y', legendY + 3);
+                text.setAttribute('fill', '#e0e6ed');
+                text.setAttribute('font-size', '11');
+                text.setAttribute('font-weight', 'bold');
+                text.textContent = label;
+                svg.appendChild(text);
+            });
+
+            // Hover Interaction
+            const tooltip = document.createElement('div');
+            tooltip.className = 'chart-tooltip';
+            container.appendChild(tooltip);
+
+            // Crosshair lines
+            const crosshairV = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            crosshairV.setAttribute('stroke', '#60a5fa');
+            crosshairV.setAttribute('stroke-width', '1');
+            crosshairV.setAttribute('stroke-dasharray', '4,4');
+            crosshairV.setAttribute('opacity', '0.5');
+            crosshairV.style.display = 'none';
+            svg.appendChild(crosshairV);
+
+            const crosshairH = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            crosshairH.setAttribute('stroke', '#60a5fa');
+            crosshairH.setAttribute('stroke-width', '1');
+            crosshairH.setAttribute('stroke-dasharray', '4,4');
+            crosshairH.setAttribute('opacity', '0.5');
+            crosshairH.style.display = 'none';
+            svg.appendChild(crosshairH);
+
+            const hoverCirclePL = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            hoverCirclePL.setAttribute('r', '5');
+            hoverCirclePL.setAttribute('fill', '#3b82f6');
+            hoverCirclePL.setAttribute('stroke', '#fff');
+            hoverCirclePL.setAttribute('stroke-width', '2');
+            hoverCirclePL.style.display = 'none';
+            svg.appendChild(hoverCirclePL);
+
+            const hoverCircleSpot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            hoverCircleSpot.setAttribute('r', '5');
+            hoverCircleSpot.setAttribute('fill', '#10b981');
+            hoverCircleSpot.setAttribute('stroke', '#fff');
+            hoverCircleSpot.setAttribute('stroke-width', '2');
+            hoverCircleSpot.style.display = 'none';
+            svg.appendChild(hoverCircleSpot);
+
+            svg.addEventListener('mousemove', (e) => {
+                const rect = svg.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+                
+                if (mouseX < margin.left || mouseX > width - margin.right ||
+                    mouseY < margin.top || mouseY > margin.top + chartHeight) {
+                    tooltip.style.display = 'none';
+                    hoverCirclePL.style.display = 'none';
+                    hoverCircleSpot.style.display = 'none';
+                    crosshairV.style.display = 'none';
+                    crosshairH.style.display = 'none';
+                    return;
+                }
+
+                const relativeX = mouseX - margin.left;
+                const index = Math.round((relativeX / chartWidth) * (dailyData.length - 1));
+                
+                if (index >= 0 && index < dailyData.length) {
+                    const data = dailyData[index];
+                    const pointX = xScale(index);
+                    const pointYPL = yScalePL(data.totalPL);
+                    
+                    const date = data.date.toLocaleDateString('en-IN', { 
+                        day: '2-digit', 
+                        month: 'short',
+                        year: 'numeric'
+                    });
+
+                    tooltip.innerHTML = `
+                        <div style="font-weight: 600; color: #60a5fa; margin-bottom: 6px;">${date}</div>
+                        <div style="color: #10b981;">NIFTY: ${formatNumber(data.spot)}</div>
+                        <div>Put: ${formatNumber(data.putPrice)}</div>
+                        <div>Call: ${formatNumber(data.callPrice)}</div>
+                        <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #374151; font-weight: 600; color: ${data.totalPL >= 0 ? '#10b981' : '#ef4444'};">
+                            P&L: ${formatINR(data.totalPL)}
+                        </div>
+                    `;
+
+                    // Position tooltip very close to cursor
+                    tooltip.style.display = 'block';
+                    
+                    const tooltipWidth = 220;
+                    const tooltipHeight = 150;
+                    const offset = 8; // Very close to cursor
+                    
+                    let tooltipX = e.clientX + offset;
+                    let tooltipY = e.clientY + offset;
+                    
+                    // Smart positioning - flip if would go off screen
+                    if (tooltipX + tooltipWidth > window.innerWidth) {
+                        tooltipX = e.clientX - tooltipWidth - offset;
+                    }
+                    if (tooltipY + tooltipHeight > window.innerHeight) {
+                        tooltipY = e.clientY - tooltipHeight - offset;
+                    }
+                    
+                    // Keep minimum distance from edges
+                    tooltipX = Math.max(5, Math.min(tooltipX, window.innerWidth - tooltipWidth - 5));
+                    tooltipY = Math.max(5, Math.min(tooltipY, window.innerHeight - tooltipHeight - 5));
+                    
+                    tooltip.style.left = tooltipX + 'px';
+                    tooltip.style.top = tooltipY + 'px';
+
+                    // Crosshair - vertical
+                    crosshairV.setAttribute('x1', pointX);
+                    crosshairV.setAttribute('y1', margin.top);
+                    crosshairV.setAttribute('x2', pointX);
+                    crosshairV.setAttribute('y2', margin.top + chartHeight);
+                    crosshairV.style.display = 'block';
+
+                    // Crosshair - horizontal (at P&L point)
+                    crosshairH.setAttribute('x1', margin.left);
+                    crosshairH.setAttribute('y1', pointYPL);
+                    crosshairH.setAttribute('x2', width - margin.right);
+                    crosshairH.setAttribute('y2', pointYPL);
+                    crosshairH.style.display = 'block';
+
+                    // Circles
+                    hoverCirclePL.setAttribute('cx', pointX);
+                    hoverCirclePL.setAttribute('cy', pointYPL);
+                    hoverCirclePL.style.display = 'block';
+
+                    hoverCircleSpot.setAttribute('cx', pointX);
+                    hoverCircleSpot.setAttribute('cy', yScaleSpot(data.spot));
+                    hoverCircleSpot.style.display = 'block';
+                }
+            });
+
+            svg.addEventListener('mouseleave', () => {
+                tooltip.style.display = 'none';
+                hoverCirclePL.style.display = 'none';
+                hoverCircleSpot.style.display = 'none';
+                crosshairV.style.display = 'none';
+                crosshairH.style.display = 'none';
+            });
+
+            container.appendChild(svg);
+        }
+
+        // Load Data
+        async function loadData() {
+            const statusIndicator = document.getElementById('statusIndicator');
+            statusIndicator.className = 'status-indicator loading';
+            statusIndicator.textContent = 'Fetching data...';
+
+            try {
+                const response = await fetch(CSV_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const csvText = await response.text();
+                const priceData = parseCSV(csvText);
+                
+                if (priceData.length === 0) throw new Error('No valid data');
+
+                portfolioData = calculatePortfolio(priceData);
+                
+                updateSnapshotTable(portfolioData);
+                updatePayoffTable(portfolioData.dailyData);
+                
+                setTimeout(() => updateChart(portfolioData.dailyData), 100);
+                
+                const lastDate = priceData[priceData.length - 1].date.toLocaleDateString('en-IN');
+                statusIndicator.className = 'status-indicator success';
+                statusIndicator.textContent = `✓ Updated: ${lastDate}`;
+                
+            } catch (error) {
+                statusIndicator.className = 'status-indicator error';
+                statusIndicator.textContent = `✗ Error: ${error.message}`;
+            }
+        }
+
+        // Auto-load
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        // Resize handler
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                if (portfolioData) updateChart(portfolioData.dailyData);
+            }, 250);
+        });
+    </script>
+</body>
+</html>
