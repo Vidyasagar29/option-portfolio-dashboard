@@ -556,9 +556,9 @@
 
             <!-- Mobile Tabs -->
             <div class="mobile-tabs">
-                <button class="mobile-tab-btn active" onclick="switchMobileTab('snapshot')">📊 Summary</button>
-                <button class="mobile-tab-btn" onclick="switchMobileTab('chart')">📈 Chart</button>
-                <button class="mobile-tab-btn" onclick="switchMobileTab('payoff')">📋 History</button>
+                <button class="mobile-tab-btn active" onclick="switchMobileTab('snapshot')"> Summary</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('chart')"> Chart</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('payoff')"> History</button>
             </div>
 
             <div class="dashboard-content">
@@ -578,8 +578,8 @@
             <div class="right-panel">
                 <!-- Desktop Tabs -->
                 <div class="desktop-tabs">
-                    <button class="tab-btn active" onclick="switchTab('chart')">📈 Chart</button>
-                    <button class="tab-btn" onclick="switchTab('payoff')">📋 Daily Payoff Table</button>
+                    <button class="tab-btn active" onclick="switchTab('chart')"> Chart</button>
+                    <button class="tab-btn" onclick="switchTab('payoff')"> Daily Payoff Table</button>
                 </div>
 
                 <!-- Tab Content: Chart -->
@@ -852,7 +852,7 @@
                 <!-- NIFTY Spot Card -->
                 <div class="portfolio-card position-card ${spotPL >= 0 ? 'positive-card' : 'negative-card'}">
                     <div class="card-title-row">
-                        <div class="card-symbol">NIFTY SPOT</div>
+                        <div class="card-symbol">NIFTY Long Futures</div>
                         <div class="card-pnl-big ${spotPL >= 0 ? 'positive' : 'negative'}">
                             ${formatINRFull(spotPL)}
                         </div>
@@ -876,7 +876,7 @@
                 <!-- PUT Card -->
                 <div class="portfolio-card position-card ${putPL >= 0 ? 'positive-card' : 'negative-card'}">
                     <div class="card-title-row">
-                        <div class="card-symbol">PUT 25000</div>
+                        <div class="card-symbol">Long PUT 25000</div>
                         <div class="card-pnl-big ${putPL >= 0 ? 'positive' : 'negative'}">
                             ${formatINRFull(putPL)}
                         </div>
@@ -900,7 +900,7 @@
                 <!-- CALL Card -->
                 <div class="portfolio-card position-card ${callPL >= 0 ? 'positive-card' : 'negative-card'}">
                     <div class="card-title-row">
-                        <div class="card-symbol">CALL 29000</div>
+                        <div class="card-symbol">Short CALL 29000</div>
                         <div class="card-pnl-big ${callPL >= 0 ? 'positive' : 'negative'}">
                             ${formatINRFull(callPL)}
                         </div>
