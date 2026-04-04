@@ -34,7 +34,7 @@ body {
     height: 100vh;
     min-height: 100vh;
     margin: 0;
-    padding: 8px;
+    padding: 6px;
     font-family: "IBM Plex Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--ink);
     background: #ffffff;
@@ -59,11 +59,11 @@ body {
     z-index: 1;
     display: grid;
     grid-template-rows: auto minmax(0, 1fr);
-    gap: 8px;
+    gap: 6px;
     width: min(1120px, 100%);
     margin: 0 auto;
-    height: calc(100vh - 16px);
-    min-height: calc(100vh - 16px);
+    height: calc(100vh - 12px);
+    min-height: calc(100vh - 12px);
 }
 
 #niftyDashboard .main-header,
@@ -77,9 +77,9 @@ body {
 }
 
 #niftyDashboard .main-header {
-    padding: 10px 12px;
+    padding: 8px 10px;
     display: grid;
-    gap: 2px;
+    gap: 1px;
     text-align: left;
     position: relative;
     overflow: hidden;
@@ -97,7 +97,7 @@ body {
 #niftyDashboard .main-title {
     margin: 0;
     font-family: "IBM Plex Serif", Georgia, serif;
-    font-size: clamp(1rem, 2vw, 1.45rem);
+    font-size: clamp(0.95rem, 1.7vw, 1.28rem);
     line-height: 1;
     font-weight: 600;
     letter-spacing: -0.02em;
@@ -107,7 +107,7 @@ body {
 
 #niftyDashboard .main-subtitle {
     margin: 0;
-    font-size: 0.58rem;
+    font-size: 0.53rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--accent);
@@ -117,7 +117,7 @@ body {
 #niftyDashboard .dashboard-content {
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr);
-    gap: 8px;
+    gap: 6px;
     align-items: stretch;
     min-height: 0;
     overflow: hidden;
@@ -135,9 +135,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 12px;
+    padding: 8px 10px;
     border-bottom: 1px solid var(--line);
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -146,12 +146,12 @@ body {
 }
 
 #niftyDashboard .status-indicator {
-    padding: 7px 9px;
-    margin: 0 10px 8px;
+    padding: 5px 8px;
+    margin: 0 8px 6px;
     border: 1px solid rgba(156, 123, 54, 0.2);
     border-radius: 8px;
     background: linear-gradient(180deg, rgba(156, 123, 54, 0.08), rgba(46, 110, 220, 0.03));
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--muted);
@@ -163,9 +163,9 @@ body {
 #niftyDashboard .status-indicator.error { color: var(--negative); }
 
 #niftyDashboard .snapshot-cards {
-    padding: 0 10px 10px;
+    padding: 0 8px 8px;
     display: grid;
-    gap: 8px;
+    gap: 6px;
     overflow-y: auto;
 }
 
@@ -173,7 +173,7 @@ body {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 251, 0.98));
     border: 1px solid var(--line);
     border-radius: 8px;
-    padding: 10px;
+    padding: 8px;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -187,7 +187,7 @@ body {
     background: linear-gradient(180deg, rgba(23, 138, 87, 0.08), rgba(46, 110, 220, 0.03));
     border-color: rgba(23, 138, 87, 0.2);
     text-align: left;
-    padding: 12px;
+    padding: 10px;
 }
 
 #niftyDashboard .total-card.negative-card,
@@ -196,16 +196,16 @@ body {
 }
 
 #niftyDashboard .total-card-header {
-    font-size: 0.62rem;
+    font-size: 0.58rem;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 600;
 }
 
 #niftyDashboard .total-card-value {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
     font-weight: 700;
     line-height: 1.1;
     text-shadow: none;
@@ -227,12 +227,12 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 10px;
+    margin-bottom: 6px;
 }
 
 #niftyDashboard .card-symbol {
-    font-size: 0.76rem;
+    font-size: 0.7rem;
     font-weight: 600;
     color: var(--ink);
     letter-spacing: 0.06em;
@@ -240,22 +240,22 @@ body {
 }
 
 #niftyDashboard .card-pnl-big {
-    font-size: 0.95rem;
+    font-size: 0.86rem;
     font-weight: 600;
     line-height: 1;
 }
 
 #niftyDashboard .card-details {
     display: grid;
-    gap: 4px;
+    gap: 3px;
 }
 
 #niftyDashboard .card-detail-row {
-    font-size: 0.7rem;
+    font-size: 0.64rem;
     color: var(--muted);
     display: flex;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
 }
 
 #niftyDashboard .card-detail-row .label {
@@ -271,7 +271,7 @@ body {
 #niftyDashboard .mobile-tabs {
     display: flex;
     gap: 6px;
-    padding: 8px;
+    padding: 6px;
     background: transparent;
     border-bottom: 1px solid var(--line);
 }
@@ -283,9 +283,9 @@ body {
     background: rgba(255, 255, 255, 0.92);
     color: var(--muted);
     border-radius: 8px;
-    padding: 8px 10px;
+    padding: 6px 8px;
     font: inherit;
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -316,8 +316,8 @@ body {
 #niftyDashboard .chart-wrapper {
     flex: 1;
     min-height: 0;
-    padding: 8px;
-    margin: 0 10px 10px;
+    padding: 6px;
+    margin: 0 8px 8px;
     border: 1px solid var(--line);
     border-radius: 8px;
     background:
@@ -330,13 +330,13 @@ body {
     flex: 1;
     min-height: 0;
     height: 100%;
-    padding: 0 10px 10px;
+    padding: 0 8px 8px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 #niftyDashboard #tabPayoff .panel-content {
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 
 #niftyDashboard table {
@@ -357,12 +357,12 @@ body {
 }
 
 #niftyDashboard th {
-    padding: 7px 6px;
+    padding: 6px 5px;
     text-align: right;
     font-weight: 600;
     color: var(--muted);
     border-bottom: 1px solid rgba(102, 119, 136, 0.1);
-    font-size: 0.6rem;
+    font-size: 0.56rem;
     text-transform: uppercase;
     letter-spacing: 0.12em;
     white-space: nowrap;
@@ -374,11 +374,11 @@ body {
 }
 
 #niftyDashboard td {
-    padding: 7px 6px;
+    padding: 5px 5px;
     text-align: right;
     border-bottom: 1px solid rgba(102, 119, 136, 0.1);
     white-space: nowrap;
-    font-size: 0.64rem;
+    font-size: 0.6rem;
     color: var(--ink);
     font-variant-numeric: tabular-nums;
 }
@@ -399,9 +399,9 @@ body {
     justify-content: center;
     flex-direction: column;
     height: 100%;
-    min-height: 160px;
+    min-height: 120px;
     color: var(--muted);
-    font-size: 0.72rem;
+    font-size: 0.66rem;
     gap: 8px;
 }
 
@@ -484,13 +484,13 @@ body {
 
     #niftyDashboard .mobile-tabs {
         display: flex !important;
-        padding: 6px;
+        padding: 5px;
         margin: 0;
     }
 
     #niftyDashboard .mobile-tab-btn {
-        padding: 7px 6px;
-        font-size: 0.64rem;
+        padding: 6px 5px;
+        font-size: 0.6rem;
     }
 
     #niftyDashboard .tab-content {
@@ -500,45 +500,45 @@ body {
     }
 
     #niftyDashboard .chart-wrapper {
-        min-height: 260px;
-        margin: 0 8px 8px;
+        min-height: 240px;
+        margin: 0 6px 6px;
     }
 
     #niftyDashboard .panel-content,
     #niftyDashboard .snapshot-cards {
-        padding: 0 8px 8px;
+        padding: 0 6px 6px;
     }
 
     #niftyDashboard .panel-header {
-        padding: 8px;
-        font-size: 0.7rem;
-    }
-
-    #niftyDashboard .status-indicator {
-        margin: 0 8px 6px;
-        font-size: 0.58rem;
-    }
-
-    #niftyDashboard .total-card-value {
-        font-size: 1rem;
-    }
-
-    #niftyDashboard .card-pnl-big {
-        font-size: 0.8rem;
-    }
-
-    #niftyDashboard .card-symbol {
+        padding: 7px;
         font-size: 0.66rem;
     }
 
-    #niftyDashboard .card-detail-row {
+    #niftyDashboard .status-indicator {
+        margin: 0 6px 5px;
+        font-size: 0.54rem;
+    }
+
+    #niftyDashboard .total-card-value {
+        font-size: 0.92rem;
+    }
+
+    #niftyDashboard .card-pnl-big {
+        font-size: 0.74rem;
+    }
+
+    #niftyDashboard .card-symbol {
         font-size: 0.62rem;
+    }
+
+    #niftyDashboard .card-detail-row {
+        font-size: 0.58rem;
     }
 
     #niftyDashboard #payoffTable th,
     #niftyDashboard #payoffTable td {
-        padding: 6px 4px;
-        font-size: 0.58rem;
+        padding: 5px 4px;
+        font-size: 0.54rem;
         white-space: normal;
         overflow-wrap: anywhere;
     }
