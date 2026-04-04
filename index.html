@@ -8,44 +8,52 @@
 </head>
 <body>
     <div id="niftyDashboard">
-        <div class="dashboard">
-            <!-- Main Header -->
-            <div class="main-header">
+        <main class="page">
+            <section class="main-header hero">
                 <h1 class="main-title">NIFTY Options Portfolio Dashboard 2026</h1>
                 <div class="main-subtitle">Year 2026</div>
-            </div>
+            </section>
 
-            <!-- Mobile Tabs -->
-            <div class="mobile-tabs">
-                <button class="mobile-tab-btn active" onclick="switchMobileTab('snapshot')">Snapshot</button>
-                <button class="mobile-tab-btn" onclick="switchMobileTab('chart')"> Chart</button>
-                <button class="mobile-tab-btn" onclick="switchMobileTab('payoff')">Table</button>
-            </div>
+            <section class="mobile-tabs" id="mobileTabs">
+                <button class="mobile-tab-btn active" onclick="switchMobileTab('snapshot', this)">Snapshot</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('chart', this)"> Chart</button>
+                <button class="mobile-tab-btn" onclick="switchMobileTab('payoff', this)">Table</button>
+            </section>
 
-            <div class="dashboard-content">
-            <!-- Left Panel: Portfolio Snapshot -->
-            <div class="left-panel">
-                <div class="panel-header">Position Snapshot</div>
-                <div id="statusIndicator" class="status-indicator loading">Loading data...</div>
-                <div class="snapshot-cards" id="snapshotCards">
+            <section class="dashboard-content layout">
+            <aside class="left-panel panel snapshot-panel">
+                <div class="panel-header">
+                    <div>
+                        <h2 class="panel-title">Position Snapshot</h2>
+                    </div>
+                    <div id="statusIndicator" class="status loading">Loading data...</div>
+                </div>
+                <div id="totalProfit" class="profit-line loading">Loading...</div>
+                <div class="snapshot-cards positions" id="snapshotCards">
                     <div class="loading">
                         <div class="spinner"></div>
                         <div>Loading...</div>
                     </div>
                 </div>
-            </div>
+            </aside>
 
-            <!-- Right Panel: Tabs (Chart & Payoff Table) -->
-            <div class="right-panel">
-                <!-- Desktop Tabs -->
-                <div class="desktop-tabs">
-                    <button class="tab-btn active" onclick="switchTab('chart')"> Chart</button>
-                    <button class="tab-btn" onclick="switchTab('payoff')"> Table</button>
-                </div>
+            <section class="right-panel panel workspace-panel">
+                <section class="desktop-tabs tabs">
+                    <button class="tab-btn active" onclick="switchTab('chart', this)"> Chart</button>
+                    <button class="tab-btn" onclick="switchTab('payoff', this)"> Table</button>
+                </section>
 
-                <!-- Tab Content: Chart -->
-                <div id="tabChart" class="tab-content active">
-                    <div class="chart-wrapper" id="chartContainer">
+                <div id="tabChart" class="tab-content active desktop-tab-panel" data-panel="chart">
+                    <div class="panel-header chart-panel-header">
+                        <div>
+                            <h2 class="panel-title">Portfolio Trend</h2>
+                        </div>
+                        <div class="legend">
+                            <span><i class="legend-pl"></i>Portfolio P&amp;L</span>
+                            <span><i class="legend-spot"></i>NIFTY Close</span>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper chart-shell" id="chartContainer">
                         <div class="loading">
                             <div class="spinner"></div>
                             <div>Loading chart...</div>
@@ -53,9 +61,14 @@
                     </div>
                 </div>
 
-                <!-- Tab Content: Payoff Table -->
-                <div id="tabPayoff" class="tab-content">
-                    <div class="panel-content">
+                <div id="tabPayoff" class="tab-content desktop-tab-panel" data-panel="table">
+                    <div class="panel-header">
+                        <div>
+                            <h2 class="panel-title">Daily Payoff Table</h2>
+                        </div>
+                        <div id="rowCount" class="status"></div>
+                    </div>
+                    <div class="panel-content table-wrap">
                         <table id="payoffTable">
                             <thead>
                                 <tr>
@@ -77,9 +90,9 @@
                         </table>
                     </div>
                 </div>
-            </div>
-            </div> <!-- End dashboard-content -->
-        </div> <!-- End dashboard -->
+            </section>
+            </section>
+        </main>
     </div> <!-- End niftyDashboard -->
     <script src="./config.js"></script>
     <script src="./main.js"></script>

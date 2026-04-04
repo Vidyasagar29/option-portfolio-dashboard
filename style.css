@@ -1,6 +1,6 @@
 html,
 body {
-    height: 100%;
+    min-height: 100%;
 }
 
 #niftyDashboard {
@@ -26,15 +26,10 @@ body {
     margin: 0;
     padding: 0;
     background: #ffffff;
-    overflow: hidden;
 }
 
 #niftyDashboard {
-    width: 100%;
-    height: 100vh;
-    min-height: 100vh;
     margin: 0;
-    padding: 6px;
     font-family: "IBM Plex Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     color: var(--ink);
     background: #ffffff;
@@ -54,21 +49,18 @@ body {
     mask-image: linear-gradient(180deg, rgba(255, 255, 255, 0.4), transparent 85%);
 }
 
-#niftyDashboard .dashboard {
+#niftyDashboard .page {
+    width: min(1120px, calc(100% - 18px));
+    margin: 8px auto 14px;
+    display: grid;
+    gap: 8px;
+    max-width: 100%;
     position: relative;
     z-index: 1;
-    display: grid;
-    grid-template-rows: auto minmax(0, 1fr);
-    gap: 6px;
-    width: min(1120px, 100%);
-    margin: 0 auto;
-    height: calc(100vh - 12px);
-    min-height: calc(100vh - 12px);
 }
 
-#niftyDashboard .main-header,
-#niftyDashboard .left-panel,
-#niftyDashboard .right-panel,
+#niftyDashboard .hero,
+#niftyDashboard .panel,
 #niftyDashboard .mobile-tabs {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
     border: 1px solid var(--line);
@@ -76,16 +68,15 @@ body {
     box-shadow: var(--shadow);
 }
 
-#niftyDashboard .main-header {
-    padding: 8px 10px;
+#niftyDashboard .hero {
+    padding: 10px 12px;
     display: grid;
-    gap: 1px;
-    text-align: left;
+    gap: 2px;
     position: relative;
     overflow: hidden;
 }
 
-#niftyDashboard .main-header::after {
+#niftyDashboard .hero::after {
     content: "";
     position: absolute;
     inset: auto -10% -20% 55%;
@@ -97,183 +88,38 @@ body {
 #niftyDashboard .main-title {
     margin: 0;
     font-family: "IBM Plex Serif", Georgia, serif;
-    font-size: clamp(0.95rem, 1.7vw, 1.28rem);
+    font-size: clamp(1rem, 2vw, 1.45rem);
     line-height: 1;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--ink);
-    text-transform: none;
+    max-width: none;
 }
 
 #niftyDashboard .main-subtitle {
     margin: 0;
-    font-size: 0.53rem;
+    font-size: 0.58rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--accent);
     font-weight: 600;
 }
 
-#niftyDashboard .dashboard-content {
+#niftyDashboard .layout {
     display: grid;
     grid-template-columns: 300px minmax(0, 1fr);
+    gap: 8px;
+    align-items: start;
+}
+
+#niftyDashboard .tabs {
+    display: flex;
     gap: 6px;
-    align-items: stretch;
-    min-height: 0;
-    overflow: hidden;
 }
 
-#niftyDashboard .left-panel,
-#niftyDashboard .right-panel {
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-}
-
-#niftyDashboard .panel-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--line);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink);
-    background: rgba(255, 255, 255, 0.4);
-}
-
-#niftyDashboard .status-indicator {
-    padding: 5px 8px;
-    margin: 0 8px 6px;
-    border: 1px solid rgba(156, 123, 54, 0.2);
-    border-radius: 8px;
-    background: linear-gradient(180deg, rgba(156, 123, 54, 0.08), rgba(46, 110, 220, 0.03));
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-    text-align: left;
-}
-
-#niftyDashboard .status-indicator.loading { color: var(--accent-2); }
-#niftyDashboard .status-indicator.success { color: var(--positive); }
-#niftyDashboard .status-indicator.error { color: var(--negative); }
-
-#niftyDashboard .snapshot-cards {
-    padding: 0 8px 8px;
-    display: grid;
-    gap: 6px;
-    overflow-y: auto;
-}
-
-#niftyDashboard .portfolio-card {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 251, 0.98));
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 8px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-#niftyDashboard .portfolio-card:hover {
-    border-color: rgba(156, 123, 54, 0.25);
-    box-shadow: 0 10px 20px rgba(20, 32, 43, 0.06);
-    transform: none;
-}
-
-#niftyDashboard .total-card {
-    background: linear-gradient(180deg, rgba(23, 138, 87, 0.08), rgba(46, 110, 220, 0.03));
-    border-color: rgba(23, 138, 87, 0.2);
-    text-align: left;
-    padding: 10px;
-}
-
-#niftyDashboard .total-card.negative-card,
-#niftyDashboard .total-card-value.negative {
-    border-color: rgba(193, 68, 68, 0.2);
-}
-
-#niftyDashboard .total-card-header {
-    font-size: 0.58rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
-    font-weight: 600;
-}
-
-#niftyDashboard .total-card-value {
-    font-size: 1.05rem;
-    font-weight: 700;
-    line-height: 1.1;
-    text-shadow: none;
-}
-
-#niftyDashboard .total-card-value.positive,
-#niftyDashboard .card-pnl-big.positive,
-#niftyDashboard .positive {
-    color: var(--positive);
-}
-
-#niftyDashboard .total-card-value.negative,
-#niftyDashboard .card-pnl-big.negative,
-#niftyDashboard .negative {
-    color: var(--negative);
-}
-
-#niftyDashboard .card-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 6px;
-}
-
-#niftyDashboard .card-symbol {
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: var(--ink);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-}
-
-#niftyDashboard .card-pnl-big {
-    font-size: 0.86rem;
-    font-weight: 600;
-    line-height: 1;
-}
-
-#niftyDashboard .card-details {
-    display: grid;
-    gap: 3px;
-}
-
-#niftyDashboard .card-detail-row {
-    font-size: 0.64rem;
-    color: var(--muted);
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-#niftyDashboard .card-detail-row .label {
-    color: var(--muted);
-}
-
-#niftyDashboard .card-detail-row .value {
-    color: var(--ink);
-    font-weight: 600;
-}
-
-#niftyDashboard .desktop-tabs,
 #niftyDashboard .mobile-tabs {
-    display: flex;
+    display: none;
     gap: 6px;
-    padding: 6px;
-    background: transparent;
-    border-bottom: 1px solid var(--line);
+    padding: 0;
 }
 
 #niftyDashboard .tab-btn,
@@ -283,14 +129,13 @@ body {
     background: rgba(255, 255, 255, 0.92);
     color: var(--muted);
     border-radius: 8px;
-    padding: 6px 8px;
+    padding: 8px 10px;
     font: inherit;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     cursor: pointer;
-    transition: all 0.2s ease;
 }
 
 #niftyDashboard .tab-btn.active,
@@ -300,72 +145,211 @@ body {
     background: linear-gradient(180deg, rgba(156, 123, 54, 0.12), rgba(46, 110, 220, 0.05));
 }
 
-#niftyDashboard .tab-content {
-    display: none;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
+#niftyDashboard .panel {
+    padding: 10px;
 }
 
-#niftyDashboard .tab-content.active {
+#niftyDashboard .snapshot-panel,
+#niftyDashboard .workspace-panel {
+    min-height: 540px;
+}
+
+#niftyDashboard .workspace-panel {
+    display: grid;
+    gap: 8px;
+}
+
+#niftyDashboard .workspace-panel > .desktop-tab-panel {
+    gap: 8px;
+}
+
+#niftyDashboard .panel-header {
     display: flex;
-    flex-direction: column;
-    min-height: 0;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 8px;
 }
 
+#niftyDashboard .chart-panel-header {
+    align-items: center;
+}
+
+#niftyDashboard .panel-title {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#niftyDashboard .legend {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 0.66rem;
+    color: var(--muted);
+}
+
+#niftyDashboard .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#niftyDashboard .legend i {
+    width: 24px;
+    height: 3px;
+    border-radius: 999px;
+    display: inline-block;
+}
+
+#niftyDashboard .legend-pl {
+    background: #c8a56a;
+}
+
+#niftyDashboard .legend-spot {
+    background: #62a3ff;
+}
+
+#niftyDashboard .chart-shell,
 #niftyDashboard .chart-wrapper {
-    flex: 1;
-    min-height: 0;
-    padding: 6px;
-    margin: 0 8px 8px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    position: relative;
     background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(244, 247, 250, 0.96)),
         radial-gradient(circle at top right, rgba(46, 110, 220, 0.06), transparent 28%);
-    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 8px;
+    min-height: 430px;
+    height: 430px;
+    margin: 0;
 }
 
+#niftyDashboard .positions,
+#niftyDashboard .snapshot-cards {
+    display: grid;
+    gap: 8px;
+    align-content: start;
+}
+
+#niftyDashboard .portfolio-card,
+#niftyDashboard .position-card {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 248, 251, 0.98));
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px;
+    display: grid;
+    gap: 6px;
+}
+
+#niftyDashboard .card-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+}
+
+#niftyDashboard .card-symbol {
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+#niftyDashboard .card-pnl-big {
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+#niftyDashboard .card-details {
+    display: grid;
+    gap: 4px;
+}
+
+#niftyDashboard .card-detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 0.7rem;
+}
+
+#niftyDashboard .card-detail-row .value {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+#niftyDashboard .table-wrap,
 #niftyDashboard .panel-content {
-    flex: 1;
-    min-height: 0;
-    height: 100%;
-    padding: 0 8px 8px;
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.98);
+    max-height: 470px;
+    width: 100%;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(102, 119, 136, 0.18) rgba(220, 228, 236, 0.5);
+    padding: 0;
 }
 
-#niftyDashboard #tabPayoff .panel-content {
-    padding-bottom: 8px;
+#niftyDashboard .table-wrap::-webkit-scrollbar,
+#niftyDashboard .panel-content::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+#niftyDashboard .table-wrap::-webkit-scrollbar-track,
+#niftyDashboard .panel-content::-webkit-scrollbar-track {
+    background: rgba(220, 228, 236, 0.45);
+    border-radius: 999px;
+}
+
+#niftyDashboard .table-wrap::-webkit-scrollbar-thumb,
+#niftyDashboard .panel-content::-webkit-scrollbar-thumb {
+    background: rgba(102, 119, 136, 0.18);
+    border: 2px solid rgba(220, 228, 236, 0.45);
+    border-radius: 999px;
+}
+
+#niftyDashboard .table-wrap::-webkit-scrollbar-thumb:hover,
+#niftyDashboard .panel-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 119, 136, 0.28);
 }
 
 #niftyDashboard table {
     width: 100%;
     border-collapse: collapse;
+    min-width: 0;
     table-layout: fixed;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    overflow: hidden;
 }
 
-#niftyDashboard thead {
+#niftyDashboard thead th {
     position: sticky;
     top: 0;
     background: rgba(248, 250, 252, 0.98);
-    z-index: 10;
+    z-index: 1;
+    font-size: 0.6rem;
+}
+
+#niftyDashboard th,
+#niftyDashboard td {
+    padding: 7px 6px;
+    text-align: right;
+    border-bottom: 1px solid rgba(102, 119, 136, 0.1);
+    font-variant-numeric: tabular-nums;
+    font-size: 0.64rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #niftyDashboard th {
-    padding: 6px 5px;
-    text-align: right;
     font-weight: 600;
-    color: var(--muted);
-    border-bottom: 1px solid rgba(102, 119, 136, 0.1);
-    font-size: 0.56rem;
-    text-transform: uppercase;
     letter-spacing: 0.12em;
-    white-space: nowrap;
+    text-transform: uppercase;
+    color: var(--muted);
 }
 
 #niftyDashboard th:first-child,
@@ -373,24 +357,91 @@ body {
     text-align: left;
 }
 
-#niftyDashboard td {
-    padding: 5px 5px;
-    text-align: right;
-    border-bottom: 1px solid rgba(102, 119, 136, 0.1);
-    white-space: nowrap;
-    font-size: 0.6rem;
-    color: var(--ink);
-    font-variant-numeric: tabular-nums;
+#niftyDashboard th:nth-child(1),
+#niftyDashboard td:nth-child(1) {
+    width: 18%;
+}
+
+#niftyDashboard th:nth-child(2),
+#niftyDashboard td:nth-child(2),
+#niftyDashboard th:nth-child(3),
+#niftyDashboard td:nth-child(3),
+#niftyDashboard th:nth-child(4),
+#niftyDashboard td:nth-child(4),
+#niftyDashboard th:nth-child(5),
+#niftyDashboard td:nth-child(5) {
+    width: 20.5%;
 }
 
 #niftyDashboard tbody tr:hover {
     background: rgba(46, 110, 220, 0.05);
 }
 
-#niftyDashboard .total-row {
-    background: rgba(248, 250, 252, 0.98) !important;
+#niftyDashboard .positive { color: var(--positive); }
+#niftyDashboard .negative { color: var(--negative); }
+
+#niftyDashboard .status {
+    font-size: 0.62rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+#niftyDashboard .status.loading { color: var(--accent-2); }
+#niftyDashboard .status.success { color: var(--positive); }
+#niftyDashboard .status.error { color: var(--negative); }
+
+#niftyDashboard .profit-line {
+    margin: -2px 0 8px;
+    padding: 7px 9px;
+    border: 1px solid rgba(156, 123, 54, 0.2);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(156, 123, 54, 0.08), rgba(46, 110, 220, 0.03));
+    font-size: 0.72rem;
     font-weight: 700;
-    border-top: 1px solid var(--line);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+#niftyDashboard .profit-line-label {
+    display: block;
+}
+
+#niftyDashboard .profit-line-value {
+    display: block;
+    margin-left: auto;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+#niftyDashboard .profit-line.positive {
+    color: var(--positive);
+    border-color: rgba(23, 138, 87, 0.2);
+    background: linear-gradient(180deg, rgba(23, 138, 87, 0.08), rgba(46, 110, 220, 0.03));
+}
+
+#niftyDashboard .profit-line.negative {
+    color: var(--negative);
+    border-color: rgba(193, 68, 68, 0.2);
+    background: linear-gradient(180deg, rgba(193, 68, 68, 0.08), rgba(46, 110, 220, 0.03));
+}
+
+#niftyDashboard .workspace-panel > .desktop-tab-panel.hidden-panel,
+#niftyDashboard .workspace-panel > .desktop-tab-panel:not(.active) {
+    display: none !important;
+}
+
+#niftyDashboard .workspace-panel > .desktop-tab-panel.active {
+    display: grid !important;
+}
+
+#niftyDashboard .mobile-panel-hidden {
+    display: none;
 }
 
 #niftyDashboard .loading {
@@ -399,9 +450,9 @@ body {
     justify-content: center;
     flex-direction: column;
     height: 100%;
-    min-height: 120px;
+    min-height: 160px;
     color: var(--muted);
-    font-size: 0.66rem;
+    font-size: 0.72rem;
     gap: 8px;
 }
 
@@ -412,7 +463,6 @@ body {
     width: 28px;
     height: 28px;
     animation: spin 1s linear infinite;
-    margin-bottom: 0;
 }
 
 @keyframes spin {
@@ -420,153 +470,197 @@ body {
     100% { transform: rotate(360deg); }
 }
 
-#niftyDashboard ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-}
-
-#niftyDashboard ::-webkit-scrollbar-track {
-    background: rgba(220, 228, 236, 0.45);
-    border-radius: 999px;
-}
-
-#niftyDashboard ::-webkit-scrollbar-thumb {
-    background: rgba(102, 119, 136, 0.18);
-    border-radius: 999px;
-}
-
 #niftyDashboard .chart-tooltip {
     position: fixed;
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid rgba(156, 123, 54, 0.22);
-    border-radius: 8px;
-    padding: 8px 10px;
-    font-size: 0.7rem;
-    color: var(--ink);
     pointer-events: none;
+    background: rgba(255, 255, 255, 0.98);
+    color: var(--ink);
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(156, 123, 54, 0.22);
+    font-size: 0.7rem;
+    line-height: 1.35;
+    box-shadow: 0 12px 24px rgba(20, 32, 43, 0.12);
+    min-width: 180px;
     display: none;
     z-index: 10000;
-    box-shadow: 0 12px 24px rgba(20, 32, 43, 0.12);
-    line-height: 1.45;
     white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-    #niftyDashboard {
-        padding: 5px;
-        height: 100vh;
-    }
-
-    #niftyDashboard .dashboard {
-        height: calc(100vh - 10px);
-        min-height: calc(100vh - 10px);
-        grid-template-rows: auto auto minmax(0, 1fr);
-    }
-
-    #niftyDashboard .dashboard-content {
+@media (max-width: 980px) {
+    #niftyDashboard .layout {
         grid-template-columns: 1fr;
-        gap: 0;
-        height: 100%;
-        min-height: 0;
-        overflow: hidden;
-    }
-
-    #niftyDashboard .left-panel,
-    #niftyDashboard .right-panel,
-    #niftyDashboard .mobile-tabs,
-    #niftyDashboard .main-header {
-        width: 100%;
-    }
-
-    #niftyDashboard .left-panel {
-        display: none;
-        height: 100%;
-    }
-
-    #niftyDashboard .desktop-tabs {
-        display: none;
-    }
-
-    #niftyDashboard .right-panel {
-        height: 100%;
-        min-height: 0;
-    }
-
-    #niftyDashboard .mobile-tabs {
-        display: flex !important;
-        padding: 5px;
-        margin: 0;
-    }
-
-    #niftyDashboard .mobile-tab-btn {
-        padding: 6px 5px;
-        font-size: 0.6rem;
-    }
-
-    #niftyDashboard .tab-content {
-        min-height: 0;
-        height: 100%;
-        overflow: hidden;
-    }
-
-    #niftyDashboard #tabChart,
-    #niftyDashboard #tabPayoff {
-        height: 100%;
-        min-height: 0;
-    }
-
-    #niftyDashboard .chart-wrapper {
-        height: 100%;
-        min-height: 0;
-        margin: 0 6px 6px;
-        overflow-y: auto;
-    }
-
-    #niftyDashboard .panel-content,
-    #niftyDashboard .snapshot-cards {
-        height: 100%;
-        min-height: 0;
-        padding: 0 6px 6px;
-        overflow-y: auto;
-    }
-
-    #niftyDashboard .panel-header {
-        padding: 7px;
-        font-size: 0.66rem;
-    }
-
-    #niftyDashboard .status-indicator {
-        margin: 0 6px 5px;
-        font-size: 0.54rem;
-    }
-
-    #niftyDashboard .total-card-value {
-        font-size: 0.92rem;
-    }
-
-    #niftyDashboard .card-pnl-big {
-        font-size: 0.74rem;
-    }
-
-    #niftyDashboard .card-symbol {
-        font-size: 0.62rem;
-    }
-
-    #niftyDashboard .card-detail-row {
-        font-size: 0.58rem;
-    }
-
-    #niftyDashboard #payoffTable th,
-    #niftyDashboard #payoffTable td {
-        padding: 5px 4px;
-        font-size: 0.54rem;
-        white-space: normal;
-        overflow-wrap: anywhere;
     }
 }
 
-@media (min-width: 769px) {
+@media (max-width: 768px) {
+    #niftyDashboard .page {
+        width: min(100% - 10px, 1200px);
+        margin: 5px auto 10px;
+        gap: 6px;
+    }
+
+    #niftyDashboard .hero,
+    #niftyDashboard .panel,
+    #niftyDashboard .position-card,
+    #niftyDashboard .portfolio-card {
+        border-radius: 8px;
+    }
+
+    #niftyDashboard .page,
+    #niftyDashboard .layout,
+    #niftyDashboard .snapshot-panel,
+    #niftyDashboard .workspace-panel,
+    #niftyDashboard .chart-shell,
+    #niftyDashboard .chart-wrapper,
+    #niftyDashboard .table-wrap,
+    #niftyDashboard .panel-content,
+    #niftyDashboard table {
+        max-width: 100%;
+    }
+
+    #niftyDashboard .hero {
+        padding: 9px 10px;
+        gap: 1px;
+    }
+
+    #niftyDashboard .hero::after {
+        inset: auto -20% -30% 40%;
+    }
+
     #niftyDashboard .mobile-tabs {
+        display: flex;
+    }
+
+    #niftyDashboard .left-panel {
+        display: block;
+    }
+
+    #niftyDashboard .right-panel {
         display: none;
+    }
+
+    #niftyDashboard .tabs {
+        gap: 4px;
+    }
+
+    #niftyDashboard .workspace-panel > .tabs {
+        display: none;
+    }
+
+    #niftyDashboard .tab-btn,
+    #niftyDashboard .mobile-tab-btn {
+        padding: 7px 6px;
+        font-size: 0.64rem;
+    }
+
+    #niftyDashboard .layout {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    #niftyDashboard .panel {
+        padding: 8px;
+        overflow: hidden;
+    }
+
+    #niftyDashboard .snapshot-panel,
+    #niftyDashboard .workspace-panel {
+        min-height: auto;
+    }
+
+    #niftyDashboard .snapshot-panel {
+        display: grid;
+        grid-template-rows: auto auto 1fr;
+        align-content: start;
+    }
+
+    #niftyDashboard .panel-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+        margin-bottom: 6px;
+    }
+
+    #niftyDashboard .profit-line {
+        margin: 0 0 6px;
+        padding: 10px 10px;
+        min-height: 72px;
+        font-size: 0.58rem;
+        letter-spacing: 0.04em;
+        align-items: flex-start;
+    }
+
+    #niftyDashboard .profit-line-value {
+        font-size: 0.86rem;
+        line-height: 1.2;
+    }
+
+    #niftyDashboard .legend {
+        font-size: 0.62rem;
+    }
+
+    #niftyDashboard .card-title-row,
+    #niftyDashboard .card-detail-row {
+        gap: 6px;
+    }
+
+    #niftyDashboard .card-pnl-big {
+        font-size: 0.76rem;
+        word-break: break-word;
+        text-align: right;
+    }
+
+    #niftyDashboard .card-symbol {
+        font-size: 0.66rem;
+    }
+
+    #niftyDashboard .card-details,
+    #niftyDashboard .card-detail-row {
+        font-size: 0.62rem;
+    }
+
+    #niftyDashboard .snapshot-cards {
+        margin-top: 10px;
+    }
+
+    #niftyDashboard .chart-shell,
+    #niftyDashboard .chart-wrapper {
+        min-height: 220px;
+        height: 220px;
+    }
+
+    #niftyDashboard .table-wrap,
+    #niftyDashboard .panel-content {
+        max-height: none;
+        overflow-x: hidden;
+    }
+
+    #niftyDashboard table {
+        table-layout: fixed;
+    }
+
+    #niftyDashboard th,
+    #niftyDashboard td {
+        padding: 6px 4px;
+        font-size: 0.58rem;
+        white-space: normal;
+        overflow: hidden;
+        text-overflow: clip;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    #niftyDashboard th:nth-child(1),
+    #niftyDashboard td:nth-child(1),
+    #niftyDashboard th:nth-child(2),
+    #niftyDashboard td:nth-child(2),
+    #niftyDashboard th:nth-child(3),
+    #niftyDashboard td:nth-child(3),
+    #niftyDashboard th:nth-child(4),
+    #niftyDashboard td:nth-child(4),
+    #niftyDashboard th:nth-child(5),
+    #niftyDashboard td:nth-child(5) {
+        width: 20%;
     }
 }

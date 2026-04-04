@@ -75,11 +75,13 @@ async function fetchPriceDataFromSupabase() {
     return priceData;
 }
 
-function switchTab(tabName) {
+function switchTab(tabName, button) {
     document.querySelectorAll(".tab-btn").forEach((btn) => btn.classList.remove("active"));
     document.querySelectorAll(".tab-content").forEach((content) => content.classList.remove("active"));
 
-    event.target.classList.add("active");
+    if (button) {
+        button.classList.add("active");
+    }
     document.getElementById("tab" + tabName.charAt(0).toUpperCase() + tabName.slice(1)).classList.add("active");
 
     if (tabName === "chart" && portfolioData) {
@@ -87,20 +89,25 @@ function switchTab(tabName) {
     }
 }
 
-function switchMobileTab(tabName) {
+function switchMobileTab(tabName, button) {
     document.querySelectorAll(".mobile-tab-btn").forEach((btn) => btn.classList.remove("active"));
-    event.target.classList.add("active");
+    if (button) {
+        button.classList.add("active");
+    }
 
     const leftPanel = document.querySelector(".left-panel");
+    const rightPanel = document.querySelector(".right-panel");
     const tabChart = document.getElementById("tabChart");
     const tabPayoff = document.getElementById("tabPayoff");
 
     leftPanel.style.display = "none";
+    rightPanel.style.display = "grid";
     tabChart.classList.remove("active");
     tabPayoff.classList.remove("active");
 
     if (tabName === "snapshot") {
-        leftPanel.style.display = "flex";
+        leftPanel.style.display = "block";
+        rightPanel.style.display = "none";
     } else if (tabName === "chart") {
         tabChart.classList.add("active");
         if (portfolioData) {
@@ -261,20 +268,22 @@ function formatINRFull(value) {
 
 function updateSnapshotTable(portfolio) {
     const container = document.getElementById("snapshotCards");
+    const profitLine = document.getElementById("totalProfit");
 
     const spotPL = (portfolio.latest.spot - portfolio.startSpot) * PORTFOLIO.quantity;
     const putPL = (portfolio.latest.putPrice - portfolio.startPutPrice) * PORTFOLIO.quantity;
     const callPL = (portfolio.startCallPrice - portfolio.latest.callPrice) * PORTFOLIO.quantity;
     const totalPL = portfolio.latest.totalPL;
 
-    container.innerHTML = `
-        <div class="portfolio-card total-card">
-            <div class="total-card-header">Total Portfolio P&L</div>
-            <div class="total-card-value ${totalPL >= 0 ? "positive" : "negative"}">
-                ${formatINRFull(totalPL)}
-            </div>
-        </div>
+    if (profitLine) {
+        profitLine.className = `profit-line ${totalPL >= 0 ? "positive" : "negative"}`;
+        profitLine.innerHTML = `
+            <span class="profit-line-label">Total Portfolio P&amp;L</span>
+            <span class="profit-line-value">${formatINRFull(totalPL)}</span>
+        `;
+    }
 
+    container.innerHTML = `
         <div class="portfolio-card position-card ${spotPL >= 0 ? "positive-card" : "negative-card"}">
             <div class="card-title-row">
                 <div class="card-symbol">NIFTY Long Futures</div>
@@ -348,6 +357,11 @@ function updateSnapshotTable(portfolio) {
 
 function updatePayoffTable(dailyData) {
     const tbody = document.querySelector("#payoffTable tbody");
+    const rowCount = document.getElementById("rowCount");
+
+    if (rowCount) {
+        rowCount.textContent = `${dailyData.length} Rows`;
+    }
 
     tbody.innerHTML = dailyData.map((row) => {
         const dateStr = row.date.toLocaleDateString("en-GB", {
@@ -520,31 +534,6 @@ function updateChart(dailyData) {
         svg.appendChild(text);
     }
 
-    const legendY = 10;
-    [
-        { label: "Portfolio P&L", color: "#caa25b" },
-        { label: "NIFTY Close", color: "#5c99ff" }
-    ].forEach((item, idx) => {
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", width - 150 + idx * 110);
-        line.setAttribute("y1", legendY + 3);
-        line.setAttribute("x2", width - 124 + idx * 110);
-        line.setAttribute("y2", legendY + 3);
-        line.setAttribute("stroke", item.color);
-        line.setAttribute("stroke-width", "4");
-        line.setAttribute("stroke-linecap", "round");
-        svg.appendChild(line);
-
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", width - 114 + idx * 110);
-        text.setAttribute("y", legendY + 7);
-        text.setAttribute("fill", idx === 0 ? "#5f7390" : "#6f8db4");
-        text.setAttribute("font-size", "11");
-        text.setAttribute("font-weight", "600");
-        text.textContent = item.label;
-        svg.appendChild(text);
-    });
-
     const tooltip = document.createElement("div");
     tooltip.className = "chart-tooltip";
     container.appendChild(tooltip);
@@ -677,7 +666,7 @@ function updateChart(dailyData) {
 
 async function loadData() {
     const statusIndicator = document.getElementById("statusIndicator");
-    statusIndicator.className = "status-indicator loading";
+    statusIndicator.className = "status loading";
     statusIndicator.textContent = `Fetching ${DATA_SOURCE} data...`;
 
     try {
@@ -691,20 +680,36 @@ async function loadData() {
         setTimeout(() => updateChart(portfolioData.dailyData), 100);
 
         const lastDate = priceData[priceData.length - 1].date.toLocaleDateString("en-IN");
-        statusIndicator.className = "status-indicator success";
-        statusIndicator.textContent = `\u2713 Updated: ${lastDate}`;
+        statusIndicator.className = "status success";
+        statusIndicator.textContent = `Updated: ${lastDate}`;
     } catch (error) {
-        statusIndicator.className = "status-indicator error";
-        statusIndicator.textContent = `\u2717 Error: ${error.message}`;
+        statusIndicator.className = "status error";
+        statusIndicator.textContent = `Error: ${error.message}`;
+    }
+}
+
+function syncResponsivePanels() {
+    const leftPanel = document.querySelector(".left-panel");
+    const rightPanel = document.querySelector(".right-panel");
+    if (!leftPanel || !rightPanel) return;
+
+    if (window.innerWidth > 768) {
+        leftPanel.style.display = "";
+        rightPanel.style.display = "";
+    } else {
+        leftPanel.style.display = "block";
+        rightPanel.style.display = "none";
     }
 }
 
 document.addEventListener("DOMContentLoaded", loadData);
+document.addEventListener("DOMContentLoaded", syncResponsivePanels);
 
 let resizeTimeout;
 window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+        syncResponsivePanels();
         if (portfolioData) updateChart(portfolioData.dailyData);
     }, 250);
 });
