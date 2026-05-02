@@ -1,19 +1,700 @@
 {
-  "lastUpdated": "",
+  "lastUpdated": "2026-05-02T23:26:26Z",
   "config": {
-    "quantity": 0,
-    "putStrike": 0,
-    "callStrike": 0,
-    "putIV": 0,
-    "callIV": 0,
-    "riskFreeRate": 0,
-    "expiryDate": ""
+    "quantity": 2475,
+    "putStrike": 26000,
+    "callStrike": 29000,
+    "putIV": 0.16,
+    "callIV": 0.09,
+    "riskFreeRate": 0.1,
+    "expiryDate": "2026-12-29"
   },
   "summary": {
-    "startSpot": 0,
-    "startPutPrice": 0,
-    "startCallPrice": 0,
-    "initialInvestment": 0
+    "startSpot": 26146.55,
+    "startPutPrice": 605.392716,
+    "startCallPrice": 880.142069,
+    "initialInvestment": 64032706.600891
   },
-  "records": []
+  "records": [
+    {
+      "date": "2026-01-01",
+      "spot": 26146.55,
+      "putPrice": 605.392716,
+      "callPrice": 880.142069,
+      "portfolioValue": 64032706.600891,
+      "pnl": 0.0
+    },
+    {
+      "date": "2026-01-02",
+      "spot": 26328.55,
+      "putPrice": 564.661392,
+      "callPrice": 968.808107,
+      "portfolioValue": 64162898.13163,
+      "pnl": 130191.530739
+    },
+    {
+      "date": "2026-01-05",
+      "spot": 26250.3,
+      "putPrice": 582.016812,
+      "callPrice": 913.809383,
+      "portfolioValue": 64148305.887002,
+      "pnl": 115599.286112
+    },
+    {
+      "date": "2026-01-06",
+      "spot": 26178.7,
+      "putPrice": 598.293737,
+      "callPrice": 873.023087,
+      "portfolioValue": 64112327.357107,
+      "pnl": 79620.756217
+    },
+    {
+      "date": "2026-01-07",
+      "spot": 26140.75,
+      "putPrice": 607.116181,
+      "callPrice": 849.690672,
+      "portfolioValue": 64097984.38592,
+      "pnl": 65277.785029
+    },
+    {
+      "date": "2026-01-08",
+      "spot": 25876.85,
+      "putPrice": 671.254523,
+      "callPrice": 722.243616,
+      "portfolioValue": 63919005.743799,
+      "pnl": -113700.857092
+    },
+    {
+      "date": "2026-01-09",
+      "spot": 25683.3,
+      "putPrice": 721.906186,
+      "callPrice": 635.782965,
+      "portfolioValue": 63779322.471529,
+      "pnl": -253384.129362
+    },
+    {
+      "date": "2026-01-12",
+      "spot": 25790.25,
+      "putPrice": 694.114495,
+      "callPrice": 668.185399,
+      "portfolioValue": 63895043.260702,
+      "pnl": -137663.340189
+    },
+    {
+      "date": "2026-01-13",
+      "spot": 25732.3,
+      "putPrice": 709.566201,
+      "callPrice": 639.998707,
+      "portfolioValue": 63859622.046158,
+      "pnl": -173084.554733
+    },
+    {
+      "date": "2026-01-14",
+      "spot": 25665.6,
+      "putPrice": 727.708293,
+      "callPrice": 609.06351,
+      "portfolioValue": 63816005.837051,
+      "pnl": -216700.763839
+    },
+    {
+      "date": "2026-01-16",
+      "spot": 25694.35,
+      "putPrice": 720.303209,
+      "callPrice": 612.757628,
+      "portfolioValue": 63859691.563862,
+      "pnl": -173015.037029
+    },
+    {
+      "date": "2026-01-19",
+      "spot": 25585.5,
+      "putPrice": 750.913977,
+      "callPrice": 558.943309,
+      "portfolioValue": 63799239.903355,
+      "pnl": -233466.697536
+    },
+    {
+      "date": "2026-01-20",
+      "spot": 25232.5,
+      "putPrice": 855.748084,
+      "callPrice": 432.817781,
+      "portfolioValue": 63497189.999275,
+      "pnl": -535516.601616
+    },
+    {
+      "date": "2026-01-21",
+      "spot": 25157.5,
+      "putPrice": 879.808736,
+      "callPrice": 406.338266,
+      "portfolioValue": 63436651.91427,
+      "pnl": -596054.686621
+    },
+    {
+      "date": "2026-01-22",
+      "spot": 25289.9,
+      "putPrice": 838.681295,
+      "callPrice": 444.73117,
+      "portfolioValue": 63567529.060954,
+      "pnl": -465177.539937
+    },
+    {
+      "date": "2026-01-23",
+      "spot": 25048.65,
+      "putPrice": 916.022742,
+      "callPrice": 368.28155,
+      "portfolioValue": 63351068.200485,
+      "pnl": -681638.400406
+    },
+    {
+      "date": "2026-01-27",
+      "spot": 25175.4,
+      "putPrice": 876.480438,
+      "callPrice": 393.19272,
+      "portfolioValue": 63505252.100834,
+      "pnl": -527454.500057
+    },
+    {
+      "date": "2026-01-28",
+      "spot": 25342.75,
+      "putPrice": 824.455639,
+      "callPrice": 442.10496,
+      "portfolioValue": 63669624.181164,
+      "pnl": -363082.419727
+    },
+    {
+      "date": "2026-01-29",
+      "spot": 25418.9,
+      "putPrice": 801.726502,
+      "callPrice": 463.867816,
+      "portfolioValue": 63747977.748352,
+      "pnl": -284728.852539
+    },
+    {
+      "date": "2026-01-30",
+      "spot": 25320.65,
+      "putPrice": 831.878646,
+      "callPrice": 428.455842,
+      "portfolioValue": 63667080.189469,
+      "pnl": -365626.411422
+    },
+    {
+      "date": "2026-02-02",
+      "spot": 25088.4,
+      "putPrice": 907.300458,
+      "callPrice": 350.293113,
+      "portfolioValue": 63472383.178592,
+      "pnl": -560323.422299
+    },
+    {
+      "date": "2026-02-03",
+      "spot": 25727.55,
+      "putPrice": 714.323116,
+      "callPrice": 556.314423,
+      "portfolioValue": 64066757.764675,
+      "pnl": 34051.163784
+    },
+    {
+      "date": "2026-02-04",
+      "spot": 25776.0,
+      "putPrice": 701.265929,
+      "callPrice": 571.093172,
+      "portfolioValue": 64117777.573047,
+      "pnl": 85070.972157
+    },
+    {
+      "date": "2026-02-05",
+      "spot": 25642.8,
+      "putPrice": 738.235359,
+      "callPrice": 517.327381,
+      "portfolioValue": 64012677.245101,
+      "pnl": -20029.35579
+    },
+    {
+      "date": "2026-02-06",
+      "spot": 25693.7,
+      "putPrice": 724.135682,
+      "callPrice": 532.302756,
+      "portfolioValue": 64066693.991843,
+      "pnl": 33987.390952
+    },
+    {
+      "date": "2026-02-09",
+      "spot": 25867.3,
+      "putPrice": 677.383122,
+      "callPrice": 587.334669,
+      "portfolioValue": 64244437.422057,
+      "pnl": 211730.821167
+    },
+    {
+      "date": "2026-02-10",
+      "spot": 25935.15,
+      "putPrice": 659.685743,
+      "callPrice": 610.58658,
+      "portfolioValue": 64311016.679992,
+      "pnl": 278310.079101
+    },
+    {
+      "date": "2026-02-11",
+      "spot": 25953.85,
+      "putPrice": 654.907079,
+      "callPrice": 614.158859,
+      "portfolioValue": 64336630.59417,
+      "pnl": 303923.99328
+    },
+    {
+      "date": "2026-02-12",
+      "spot": 25807.2,
+      "putPrice": 693.759842,
+      "callPrice": 552.265995,
+      "portfolioValue": 64223017.270766,
+      "pnl": 190310.669876
+    },
+    {
+      "date": "2026-02-13",
+      "spot": 25471.1,
+      "putPrice": 789.952742,
+      "callPrice": 430.48882,
+      "portfolioValue": 63930645.70779,
+      "pnl": -102060.8931
+    },
+    {
+      "date": "2026-02-16",
+      "spot": 25682.75,
+      "putPrice": 728.720228,
+      "callPrice": 491.588287,
+      "portfolioValue": 64151707.805211,
+      "pnl": 119001.20432
+    },
+    {
+      "date": "2026-02-17",
+      "spot": 25725.4,
+      "putPrice": 716.851012,
+      "callPrice": 503.158688,
+      "portfolioValue": 64199253.503218,
+      "pnl": 166546.902327
+    },
+    {
+      "date": "2026-02-18",
+      "spot": 25819.35,
+      "putPrice": 691.041257,
+      "callPrice": 533.91966,
+      "portfolioValue": 64291767.203811,
+      "pnl": 259060.60292
+    },
+    {
+      "date": "2026-02-19",
+      "spot": 25454.35,
+      "putPrice": 796.446557,
+      "callPrice": 405.424818,
+      "portfolioValue": 63967295.052544,
+      "pnl": -65411.548347
+    },
+    {
+      "date": "2026-02-20",
+      "spot": 25571.25,
+      "putPrice": 761.591286,
+      "callPrice": 439.459235,
+      "portfolioValue": 64086120.575757,
+      "pnl": 53413.974867
+    },
+    {
+      "date": "2026-02-23",
+      "spot": 25713.0,
+      "putPrice": 721.078148,
+      "callPrice": 476.941907,
+      "portfolioValue": 64243912.197119,
+      "pnl": 211205.596229
+    },
+    {
+      "date": "2026-02-24",
+      "spot": 25459.35,
+      "putPrice": 796.067972,
+      "callPrice": 390.811045,
+      "portfolioValue": 64014902.144711,
+      "pnl": -17804.45618
+    },
+    {
+      "date": "2026-02-25",
+      "spot": 25482.5,
+      "putPrice": 789.202233,
+      "callPrice": 394.654838,
+      "portfolioValue": 64045692.301698,
+      "pnl": 12985.700807
+    },
+    {
+      "date": "2026-02-26",
+      "spot": 25496.55,
+      "putPrice": 785.129663,
+      "callPrice": 395.72653,
+      "portfolioValue": 64067734.004677,
+      "pnl": 35027.403787
+    },
+    {
+      "date": "2026-02-27",
+      "spot": 25178.65,
+      "putPrice": 887.047112,
+      "callPrice": 303.565758,
+      "portfolioValue": 63761275.102318,
+      "pnl": -271431.498573
+    },
+    {
+      "date": "2026-03-02",
+      "spot": 24865.7,
+      "putPrice": 998.523257,
+      "callPrice": 224.396919,
+      "portfolioValue": 63458570.185974,
+      "pnl": -574136.414916
+    },
+    {
+      "date": "2026-03-03",
+      "spot": 24865.7,
+      "putPrice": 999.0495,
+      "callPrice": 222.118638,
+      "portfolioValue": 63465511.382951,
+      "pnl": -567195.217939
+    },
+    {
+      "date": "2026-03-04",
+      "spot": 24480.5,
+      "putPrice": 1150.022787,
+      "callPrice": 152.074853,
+      "portfolioValue": 63059158.636402,
+      "pnl": -973547.964489
+    },
+    {
+      "date": "2026-03-05",
+      "spot": 24765.9,
+      "putPrice": 1037.61774,
+      "callPrice": 198.319623,
+      "portfolioValue": 63372865.340996,
+      "pnl": -659841.259895
+    },
+    {
+      "date": "2026-03-09",
+      "spot": 24028.05,
+      "putPrice": 1353.073784,
+      "callPrice": 88.377094,
+      "portfolioValue": 62599548.057676,
+      "pnl": -1433158.543215
+    },
+    {
+      "date": "2026-03-10",
+      "spot": 24261.6,
+      "putPrice": 1248.290218,
+      "callPrice": 112.709491,
+      "portfolioValue": 62858022.299203,
+      "pnl": -1174684.301687
+    },
+    {
+      "date": "2026-03-11",
+      "spot": 23866.85,
+      "putPrice": 1432.168066,
+      "callPrice": 71.400925,
+      "portfolioValue": 62438352.422238,
+      "pnl": -1594354.178653
+    },
+    {
+      "date": "2026-03-12",
+      "spot": 23639.15,
+      "putPrice": 1547.347861,
+      "callPrice": 53.454649,
+      "portfolioValue": 62204281.949118,
+      "pnl": -1828424.651773
+    },
+    {
+      "date": "2026-03-13",
+      "spot": 23151.1,
+      "putPrice": 1814.091924,
+      "callPrice": 27.770079,
+      "portfolioValue": 61720119.065904,
+      "pnl": -2312587.534987
+    },
+    {
+      "date": "2026-03-16",
+      "spot": 23408.8,
+      "putPrice": 1675.462105,
+      "callPrice": 37.30325,
+      "portfolioValue": 61991223.165986,
+      "pnl": -2041483.434904
+    },
+    {
+      "date": "2026-03-17",
+      "spot": 23581.15,
+      "putPrice": 1584.845845,
+      "callPrice": 45.886561,
+      "portfolioValue": 62172270.478117,
+      "pnl": -1860436.122773
+    },
+    {
+      "date": "2026-03-18",
+      "spot": 23777.8,
+      "putPrice": 1485.204124,
+      "callPrice": 57.773196,
+      "portfolioValue": 62382946.546408,
+      "pnl": -1649760.054483
+    },
+    {
+      "date": "2026-03-19",
+      "spot": 23002.15,
+      "putPrice": 1913.039389,
+      "callPrice": 20.08844,
+      "portfolioValue": 61615374.84697,
+      "pnl": -2417331.753921
+    },
+    {
+      "date": "2026-03-20",
+      "spot": 23114.5,
+      "putPrice": 1848.768359,
+      "callPrice": 23.16894,
+      "portfolioValue": 61726746.06108,
+      "pnl": -2305960.539811
+    },
+    {
+      "date": "2026-03-23",
+      "spot": 22512.65,
+      "putPrice": 2229.42233,
+      "callPrice": 8.660713,
+      "portfolioValue": 61215193.752789,
+      "pnl": -2817512.848102
+    },
+    {
+      "date": "2026-03-24",
+      "spot": 22912.4,
+      "putPrice": 1977.90436,
+      "callPrice": 15.900805,
+      "portfolioValue": 61564148.79793,
+      "pnl": -2468557.802961
+    },
+    {
+      "date": "2026-03-25",
+      "spot": 23306.45,
+      "putPrice": 1747.826039,
+      "callPrice": 27.652641,
+      "portfolioValue": 61940892.909158,
+      "pnl": -2091813.691733
+    },
+    {
+      "date": "2026-03-26",
+      "spot": 23306.45,
+      "putPrice": 1749.619731,
+      "callPrice": 27.141498,
+      "portfolioValue": 61946597.376631,
+      "pnl": -2086109.22426
+    },
+    {
+      "date": "2026-03-27",
+      "spot": 22819.6,
+      "putPrice": 2042.090966,
+      "callPrice": 12.939029,
+      "portfolioValue": 61500661.04497,
+      "pnl": -2532045.55592
+    },
+    {
+      "date": "2026-03-30",
+      "spot": 22331.4,
+      "putPrice": 2370.371579,
+      "callPrice": 5.38229,
+      "portfolioValue": 61123563.490924,
+      "pnl": -2909143.109966
+    },
+    {
+      "date": "2026-03-31",
+      "spot": 22331.4,
+      "putPrice": 2373.223229,
+      "callPrice": 5.247219,
+      "portfolioValue": 61130955.62459,
+      "pnl": -2901750.976301
+    },
+    {
+      "date": "2026-04-01",
+      "spot": 22679.4,
+      "putPrice": 2143.378891,
+      "callPrice": 9.240846,
+      "portfolioValue": 61413506.662001,
+      "pnl": -2619199.93889
+    },
+    {
+      "date": "2026-04-02",
+      "spot": 22713.1,
+      "putPrice": 2124.044016,
+      "callPrice": 9.540323,
+      "portfolioValue": 61448319.141585,
+      "pnl": -2584387.459306
+    },
+    {
+      "date": "2026-04-03",
+      "spot": 22713.1,
+      "putPrice": 2126.494798,
+      "callPrice": 9.320512,
+      "portfolioValue": 61454928.858799,
+      "pnl": -2577777.742092
+    },
+    {
+      "date": "2026-04-06",
+      "spot": 22968.25,
+      "putPrice": 1971.99956,
+      "callPrice": 13.118036,
+      "portfolioValue": 61694650.520149,
+      "pnl": -2338056.080742
+    },
+    {
+      "date": "2026-04-07",
+      "spot": 23123.65,
+      "putPrice": 1879.292322,
+      "callPrice": 16.33559,
+      "portfolioValue": 61841851.661363,
+      "pnl": -2190854.939528
+    },
+    {
+      "date": "2026-04-08",
+      "spot": 23997.35,
+      "putPrice": 1402.060285,
+      "callPrice": 54.285749,
+      "portfolioValue": 62729183.225975,
+      "pnl": -1303523.374916
+    },
+    {
+      "date": "2026-04-09",
+      "spot": 23775.1,
+      "putPrice": 1516.442526,
+      "callPrice": 39.939246,
+      "portfolioValue": 62497718.117728,
+      "pnl": -1534988.483163
+    },
+    {
+      "date": "2026-04-10",
+      "spot": 24050.6,
+      "putPrice": 1378.139277,
+      "callPrice": 56.185507,
+      "portfolioValue": 62797070.579845,
+      "pnl": -1235636.021046
+    },
+    {
+      "date": "2026-04-13",
+      "spot": 23842.65,
+      "putPrice": 1486.68174,
+      "callPrice": 40.702852,
+      "portfolioValue": 62589356.497159,
+      "pnl": -1443350.103732
+    },
+    {
+      "date": "2026-04-14",
+      "spot": 23842.65,
+      "putPrice": 1488.009618,
+      "callPrice": 39.976765,
+      "portfolioValue": 62594440.061078,
+      "pnl": -1438266.539812
+    },
+    {
+      "date": "2026-04-15",
+      "spot": 24231.3,
+      "putPrice": 1296.430612,
+      "callPrice": 64.925966,
+      "portfolioValue": 63020441.498623,
+      "pnl": -1012265.102268
+    },
+    {
+      "date": "2026-04-16",
+      "spot": 24196.75,
+      "putPrice": 1313.836382,
+      "callPrice": 61.187132,
+      "portfolioValue": 62987263.144374,
+      "pnl": -1045443.456517
+    },
+    {
+      "date": "2026-04-17",
+      "spot": 24353.55,
+      "putPrice": 1241.326862,
+      "callPrice": 73.066372,
+      "portfolioValue": 63166480.960918,
+      "pnl": -866225.639973
+    },
+    {
+      "date": "2026-04-20",
+      "spot": 24364.85,
+      "putPrice": 1238.743154,
+      "callPrice": 70.642007,
+      "portfolioValue": 63194054.088917,
+      "pnl": -838652.511974
+    },
+    {
+      "date": "2026-04-21",
+      "spot": 24576.6,
+      "putPrice": 1144.656062,
+      "callPrice": 89.671898,
+      "portfolioValue": 63438170.806797,
+      "pnl": -594535.794093
+    },
+    {
+      "date": "2026-04-22",
+      "spot": 24378.1,
+      "putPrice": 1234.36452,
+      "callPrice": 69.534218,
+      "portfolioValue": 63218752.497691,
+      "pnl": -813954.1032
+    },
+    {
+      "date": "2026-04-23",
+      "spot": 24173.05,
+      "putPrice": 1332.417978,
+      "callPrice": 52.757609,
+      "portfolioValue": 62995458.162914,
+      "pnl": -1037248.437977
+    },
+    {
+      "date": "2026-04-24",
+      "spot": 23897.95,
+      "putPrice": 1472.336534,
+      "callPrice": 35.820628,
+      "portfolioValue": 62702803.117246,
+      "pnl": -1329903.483645
+    },
+    {
+      "date": "2026-04-27",
+      "spot": 24092.7,
+      "putPrice": 1376.369192,
+      "callPrice": 44.186828,
+      "portfolioValue": 62926583.851763,
+      "pnl": -1106122.749128
+    },
+    {
+      "date": "2026-04-28",
+      "spot": 23995.7,
+      "putPrice": 1426.717022,
+      "callPrice": 38.00524,
+      "portfolioValue": 62826419.161343,
+      "pnl": -1206287.439548
+    },
+    {
+      "date": "2026-04-29",
+      "spot": 24177.65,
+      "putPrice": 1336.38854,
+      "callPrice": 47.735432,
+      "portfolioValue": 63029100.191575,
+      "pnl": -1003606.409316
+    },
+    {
+      "date": "2026-04-30",
+      "spot": 23997.55,
+      "putPrice": 1428.183825,
+      "callPrice": 36.674551,
+      "portfolioValue": 62837921.703301,
+      "pnl": -1194784.897589
+    },
+    {
+      "date": "2026-05-01",
+      "spot": 23997.55,
+      "putPrice": 1429.394842,
+      "callPrice": 35.973449,
+      "portfolioValue": 62842654.196661,
+      "pnl": -1190052.404229
+    },
+    {
+      "date": "2026-05-02",
+      "spot": 23997.55,
+      "putPrice": 1430.607576,
+      "callPrice": 35.280839,
+      "portfolioValue": 62847369.922846,
+      "pnl": -1185336.678045
+    }
+  ]
 }
