@@ -29,11 +29,12 @@ jobs:
       - name: Run update script
         run: |
           python update_from_sheet.py
+          python generate_portfolio_json.py
 
-      - name: Commit and push if CSV changed
+      - name: Commit and push if data changed
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add nifty_close.csv
-          git diff --cached --quiet || git commit -m "Update NIFTY close price"
+          git add nifty_close.csv data/option-portfolio.json
+          git diff --cached --quiet || git commit -m "Update option portfolio data"
           git push

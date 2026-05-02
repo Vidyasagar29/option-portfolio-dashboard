@@ -1,0 +1,19 @@
+{
+  "lastUpdated": "",
+  "config": {
+    "quantity": 0,
+    "putStrike": 0,
+    "callStrike": 0,
+    "putIV": 0,
+    "callIV": 0,
+    "riskFreeRate": 0,
+    "expiryDate": ""
+  },
+  "summary": {
+    "startSpot": 0,
+    "startPutPrice": 0,
+    "startCallPrice": 0,
+    "initialInvestment": 0
+  },
+  "records": []
+}
